@@ -1,0 +1,19 @@
+# Trimmed CMake for Rust project usage
+# Purpose: minimal CMake listing for kernel files useful during porting
+# Not intended to be a full replacement of the upstream GNA build.
+
+cmake_minimum_required(VERSION 3.10)
+project(gna_kernels_trimmed)
+
+# Example: if you want to build a specific kernel for native tests,
+# add the source files below and use add_library(...) accordingly.
+
+set(TRIMMED_KERNEL_SOURCES
+  # e.g. isbmm8.cpp
+)
+
+# Example usage (uncomment to actually build native test lib):
+# add_library(gna_kernels_trimmed STATIC ${TRIMMED_KERNEL_SOURCES})
+# target_include_directories(gna_kernels_trimmed PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+# For porting: prefer calling into the Rust tests directly (no CMake required).
