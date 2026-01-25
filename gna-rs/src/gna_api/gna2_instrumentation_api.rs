@@ -1,4 +1,8 @@
-//! Skeleton for `gna2-instrumentation-api.h`.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+// Skeleton for `gna2-instrumentation-api.h`.
 
 /// Instrumentation point placeholders (partial)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

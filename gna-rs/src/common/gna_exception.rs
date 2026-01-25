@@ -2,7 +2,7 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-//! Exception & error types (port of `GnaException.h`).
+/// Exception & error types (port of `GnaException.h`).
 
 use thiserror::Error;
 

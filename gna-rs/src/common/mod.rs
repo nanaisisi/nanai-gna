@@ -1,4 +1,4 @@
-//! Common utilities and types ported from `gna/common`.
+/// Common utilities and types ported from `gna/common`.
 
 pub mod address;
 pub use address::BaseAddress;

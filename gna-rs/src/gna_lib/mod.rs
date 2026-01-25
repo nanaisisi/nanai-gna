@@ -1,4 +1,4 @@
-//! High-level GNA library components ported from `gna-lib`.
+/// High-level GNA library components ported from `gna-lib`.
 
 pub mod buffer_map;
 pub use buffer_map::BufferMap;

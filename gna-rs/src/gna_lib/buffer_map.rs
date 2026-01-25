@@ -1,5 +1,9 @@
-//! `BufferMap` lives in `gna-lib` in the original codebase. This mirrors the
-//! original small API: mapping from operand (u32) to `BaseAddress`.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// `BufferMap` lives in `gna-lib` in the original codebase. This mirrors the
+/// original small API: mapping from operand (u32) to `BaseAddress`.
 
 use std::collections::BTreeMap;
 use crate::common::BaseAddress;

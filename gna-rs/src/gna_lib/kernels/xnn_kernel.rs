@@ -1,4 +1,8 @@
-//! XNN kernel abstractions (port of `XnnKernel.h` / `XnnKernel.cpp`).
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// XNN kernel abstractions (port of `XnnKernel.h` / `XnnKernel.cpp`).
 
 use super::kernel_arguments::KernelArguments;
 use std::collections::BTreeMap;

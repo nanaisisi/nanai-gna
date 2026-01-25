@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-//! Profiler shim (port of `profiler.h` / `profiler.cpp`).
-//!
-//! Lightweight stub used for tests and later instrumentation.
+/// Profiler shim (port of `profiler.h` / `profiler.cpp`).
+//
+/// Lightweight stub used for tests and later instrumentation.
 
 use std::time::{Instant, Duration};
 

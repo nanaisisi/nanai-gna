@@ -1,4 +1,8 @@
-//! Acceleration detector and kernel registry (port of `AccelerationDetector`).
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Acceleration detector and kernel registry (port of `AccelerationDetector`).
 
 use super::xnn_kernel::{KernelMap, AccelerationMode, KernelFn};
 use super::kernel_arguments::KernelArguments;

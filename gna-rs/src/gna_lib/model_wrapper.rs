@@ -1,4 +1,8 @@
-//! ModelWrapper utilities ported from the original GNA implementation.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// ModelWrapper utilities ported from the original GNA implementation.
 
 use crate::gna_api::model_api::{Gna2Operation, Gna2Tensor};
 use crate::gna_api::types::{OperationType, Gna2TensorMode};

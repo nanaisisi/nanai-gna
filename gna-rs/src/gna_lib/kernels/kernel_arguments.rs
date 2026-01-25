@@ -1,4 +1,8 @@
-//! Kernel argument structures (ported from `KernelArguments.h` and related headers).
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Kernel argument structures (ported from `KernelArguments.h` and related headers).
 
 use crate::common::BaseAddress;
 

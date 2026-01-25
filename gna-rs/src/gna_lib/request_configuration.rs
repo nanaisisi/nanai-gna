@@ -1,4 +1,8 @@
-//! Skeleton for `RequestConfiguration`.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Skeleton for `RequestConfiguration`.
 
 use crate::common::BaseAddress;
 use std::collections::BTreeMap;

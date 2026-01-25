@@ -1,4 +1,8 @@
-//! Rust skeleton for `gna2-model-api.h` / `gna2-model-impl.h` types.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+// Rust skeleton for `gna2-model-api.h` / `gna2-model-impl.h` types.
 
 /// Opaque model handle used in the original API.
 #[derive(Debug, Clone, Default)]

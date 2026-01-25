@@ -1,4 +1,8 @@
-//! Skeleton for `Layer` and related types.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Skeleton for `Layer` and related types.
 
 use crate::gna_lib::buffer_map::BufferMap;
 

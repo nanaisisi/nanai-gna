@@ -2,10 +2,10 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-//! Minimal shim for `GnaDrvApi.h` interfaces used by higher-level code.
-//!
-//! This is not a full driver implementation; it provides safe Rust trait(s) and
-//! a test/dummy implementation to be used while porting.
+/// Minimal shim for `GnaDrvApi.h` interfaces used by higher-level code.
+//
+/// This is not a full driver implementation; it provides safe Rust trait(s) and
+/// a test/dummy implementation to be used while porting.
 
 use crate::common::BaseAddress;
 use crate::gna_api::types::DeviceIndex;

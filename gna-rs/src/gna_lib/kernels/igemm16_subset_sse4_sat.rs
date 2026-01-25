@@ -1,6 +1,9 @@
-// Stub for original: igemm16_subset_sse4-sat.cpp
-// SPDX-License-Identifier: LGPL-2.1-or-later
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+// Auto-generated Rust stub for original: gna/src/gna-lib/kernels/igemm16_subset_sse4-sat.cpp
 
-#![allow(dead_code)]
+#[allow(dead_code)]
 
 pub fn igemm16_subset_sse4_sat() {}

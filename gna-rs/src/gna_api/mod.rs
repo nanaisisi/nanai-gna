@@ -1,9 +1,5 @@
 // Re-export the grouped gna2 modules under `crate::gna_api`
 
-// Also expose the gna2_mod grouping for convenience
-pub mod gna2_mod;
-pub use gna2_mod::*;
-
 // Directly expose the raw gna2_ modules (so wrappers can refer to them)
 pub mod gna2_common_api;
 pub mod gna2_model_api;
@@ -29,3 +25,7 @@ pub mod capability_api { pub use super::gna2_capability_api::*; }
 pub mod instrumentation_api { pub use super::gna2_instrumentation_api::*; }
 pub mod model_export_api { pub use super::gna2_model_export_api::*; }
 pub mod suecreek_header { pub use super::gna2_suecreek_header::*; }
+
+// Re-export common items at crate::gna_api root for convenience (matches previous expectations)
+pub use inference_api::*;
+pub use types::*;

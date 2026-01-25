@@ -1,4 +1,8 @@
-//! Simple, safe translations of transpose kernels from the original C++ sources.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Simple, safe translations of transpose kernels from the original C++ sources.
 
 /// Transpose an i16 matrix stored in row-major order.
 /// `input` has length `rows * cols`, `output` must be the same length.

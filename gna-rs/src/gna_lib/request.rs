@@ -1,4 +1,8 @@
-//! Skeleton for `Request` and request lifecycle management.
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Skeleton for `Request` and request lifecycle management.
 
 use crate::gna_lib::RequestConfiguration;
 use std::sync::atomic::{AtomicU32, Ordering};

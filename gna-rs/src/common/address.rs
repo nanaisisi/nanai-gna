@@ -2,7 +2,7 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-//! Simple portability shim for `BaseAddress` (from the original `Address.h`).
+/// Simple portability shim for `BaseAddress` (from the original `Address.h`).
 
 /// Minimal representation of a BaseAddress used by ported code.
 /// This intentionally keeps a raw pointer; caller is responsible for safety.

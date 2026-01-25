@@ -1,7 +1,11 @@
-// Stub for original kernel header: common.hpp
-// SPDX-License-Identifier: LGPL-2.1-or-later
+#[allow(dead_code)]
 
-#![allow(dead_code)]
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+// Stub for original kernel header: common.hpp
+
 
 // Placeholder for ported common kernel utilities.
 

@@ -1,6 +1,6 @@
-//! Re-export of the top-level `gna_api` module under `gna_lib::gna_api` to mirror
-//! the original C++ layout (`gna-lib/gna-api`). This keeps a single implementation
-//! in `crate::gna_api` while providing the expected module path used by ports.
+/// Re-export of the top-level `gna_api` module under `gna_lib::gna_api` to mirror
+/// the original C++ layout (`gna-lib/gna-api`). This keeps a single implementation
+/// in `crate::gna_api` while providing the expected module path used by ports.
 
 pub use crate::gna_api::*;
 

@@ -1,4 +1,8 @@
-//! Kernel primitives and helpers (ported from `gna-lib` kernels and kernel-related headers).
+/**
+ @copyright Copyright (C) 2020-2022 Intel Corporation
+ SPDX-License-Identifier: LGPL-2.1-or-later
+*/
+/// Kernel primitives and helpers (ported from `gna-lib` kernels and kernel-related headers).
 
 pub mod kernel_arguments;
 pub use kernel_arguments::KernelArguments;
