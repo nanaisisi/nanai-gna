@@ -26,6 +26,9 @@ pub use raw::*;
 
 pub mod instrumentation;
 
+#[cfg(feature = "rust_backend")]
+pub mod backend;
+
 #[cfg(test)]
 mod tests {
     use super::raw;

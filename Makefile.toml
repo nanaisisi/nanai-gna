@@ -1,0 +1,40 @@
+[config]
+
+[tasks.help]
+description = "Show help"
+script = [
+    "echo Available tasks:",
+    "echo   build-gna   - Build native GNA library",
+    "echo   run-load-test - Run the GNA load_test example (forwards args)",
+    "echo Examples:",
+    "echo   cargo make build-gna",
+    "echo   cargo make run-load-test -- --threads 8 --duration 60 --device-open-close true",
+]
+
+[tasks.build-gna]
+description = "Build GNA native library (platform-aware)"
+dependencies = ["build-gna-windows", "build-gna-posix"]
+
+[tasks.build-gna-windows]
+condition = { platforms = ["windows"] }
+script = [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_gna.ps1 -Configuration Release -Arch x64",
+]
+
+[tasks.build-gna-posix]
+condition = { platforms = ["linux", "mac"] }
+script = ["bash ./scripts/build_gna.sh Release x64"]
+
+[tasks.run-load-test]
+description = "Run the GNA load test example, forwards arguments to the underlying helper script"
+dependencies = ["run-load-test-windows", "run-load-test-posix"]
+
+[tasks.run-load-test-windows]
+condition = { platforms = ["windows"] }
+script = [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_load_test_with_gna.ps1 ${@}",
+]
+
+[tasks.run-load-test-posix]
+condition = { platforms = ["linux", "mac"] }
+script = ["bash ./scripts/run_load_test_with_gna.sh ${@}"]

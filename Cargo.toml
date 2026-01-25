@@ -4,10 +4,14 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-thiserror = "1.0"
+thiserror = "*"
 
 [build-dependencies]
-bindgen = "0.69"
+bindgen = "*"
 
 [dev-dependencies]
-clap = { version = "4.5", features = ["derive"] }
+clap = { version = "*", features = ["derive"] }
+
+[features]
+link_gna = []
+rust_backend = []
