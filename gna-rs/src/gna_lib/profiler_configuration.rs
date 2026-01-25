@@ -6,8 +6,14 @@
 /// Stub for ProfilerConfiguration
 
 #[allow(dead_code)]
-pub struct ProfilerConfiguration;
+pub struct ProfilerConfiguration {
+    enabled: bool,
+}
 
 impl ProfilerConfiguration {
-    pub fn enable(&mut self, _enable: bool) { /* TODO */ }
+    pub fn new() -> Self { Self { enabled: false } }
+
+    pub fn enable(&mut self, enable: bool) { self.enabled = enable; }
+
+    pub fn is_enabled(&self) -> bool { self.enabled }
 }

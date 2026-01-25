@@ -9,5 +9,7 @@
 pub struct RecurrentFunction;
 
 impl RecurrentFunction {
-    pub fn step(&self) { /* TODO */ }
+    pub fn step(&self) {
+        // placeholder no-op
+    }
 }

@@ -9,5 +9,7 @@
 pub struct Logger;
 
 impl Logger {
-    pub fn log(&self, _msg: &str) { /* TODO */ }
+    pub fn log(&self, msg: &str) {
+        eprintln!("[GNA-RS LOG] {}", msg);
+    }
 }

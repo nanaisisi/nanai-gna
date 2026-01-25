@@ -10,5 +10,6 @@
 // Placeholder for ported common kernel utilities.
 
 pub fn common_init() {
-    // TODO: port contents of common.hpp / common.hpp implementation
+    // no-op initialization for kernel helpers (placeholder)
 }
+

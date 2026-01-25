@@ -9,5 +9,7 @@
 pub struct HwModuleInterface;
 
 impl HwModuleInterface {
-    pub fn init(&self) { /* TODO */ }
+    pub fn init(&self) {
+        // No-op initialization for the stub
+    }
 }

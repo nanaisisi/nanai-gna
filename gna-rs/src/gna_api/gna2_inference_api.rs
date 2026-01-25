@@ -35,6 +35,11 @@ pub fn Gna2RequestConfigSetOperandBuffer(cfg: &mut Gna2RequestConfig, operand_in
     cfg.inner.set_buffer(operand_index, addr);
 }
 
+/// Set instrumentation points to collect for this request configuration
+pub fn Gna2RequestConfigSetInstrumentationPoints(cfg: &mut Gna2RequestConfig, pts: &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint]) {
+    cfg.inner.set_instrumentation_points(pts);
+}
+
 /// Enqueue request and return request id
 pub fn Gna2RequestEnqueue(cfg: &Gna2RequestConfig) -> u32 {
     crate::gna_lib::request::enqueue_request(cfg.inner.clone())
@@ -43,4 +48,10 @@ pub fn Gna2RequestEnqueue(cfg: &Gna2RequestConfig) -> u32 {
 /// Wait for request completion; returns true on success
 pub fn Gna2RequestWait(request_id: u32, timeout_ms: u32) -> bool {
     crate::gna_lib::request::wait_request(request_id, timeout_ms)
+}
+
+/// Retrieve instrumentation results for a finished request (if any). Returns a vector of u64
+/// with the same order as the points passed to `Gna2RequestConfigSetInstrumentationPoints`.
+pub fn Gna2RequestGetInstrumentationResults(request_id: u32) -> Option<Vec<u64>> {
+    crate::gna_lib::request::get_instrumentation_results(request_id)
 }

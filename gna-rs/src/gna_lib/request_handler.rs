@@ -9,5 +9,7 @@
 pub struct RequestHandler;
 
 impl RequestHandler {
-    pub fn handle(&self) { /* TODO */ }
+    pub fn handle(&self) {
+        // no-op for now
+    }
 }

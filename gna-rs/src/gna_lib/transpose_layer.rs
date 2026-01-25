@@ -9,5 +9,7 @@
 pub struct TransposeLayer;
 
 impl TransposeLayer {
-    pub fn transpose(&self) { /* TODO */ }
+    pub fn transpose(&self) {
+        // no-op placeholder
+    }
 }

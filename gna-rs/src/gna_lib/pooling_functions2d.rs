@@ -9,5 +9,7 @@
 pub struct PoolingFunctions2D;
 
 impl PoolingFunctions2D {
-    pub fn pool2d(&self) { /* TODO */ }
+    pub fn pool2d(&self) {
+        // no-op placeholder
+    }
 }

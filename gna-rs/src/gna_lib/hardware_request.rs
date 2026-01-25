@@ -6,8 +6,17 @@
 /// Stub for HardwareRequest
 
 #[allow(dead_code)]
-pub struct HardwareRequest;
+pub struct HardwareRequest {
+    submitted: bool,
+}
 
 impl HardwareRequest {
-    pub fn submit(&self) { /* TODO */ }
+    pub fn new() -> Self { Self { submitted: false } }
+
+    pub fn submit(&mut self) {
+        // lightweight stub — mark as submitted
+        self.submitted = true;
+    }
+
+    pub fn is_submitted(&self) -> bool { self.submitted }
 }

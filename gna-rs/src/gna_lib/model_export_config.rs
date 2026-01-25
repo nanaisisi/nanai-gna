@@ -9,5 +9,7 @@
 pub struct ModelExportConfig;
 
 impl ModelExportConfig {
-    pub fn export(&self) { /* TODO */ }
+    pub fn export(&self) {
+        // no-op placeholder for model export
+    }
 }
