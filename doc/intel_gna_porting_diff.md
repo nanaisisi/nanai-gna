@@ -30,7 +30,7 @@
 
 - `gna-rs/` を追加し、以下レイヤーへ分割:
   - `common`（共通型・ユーティリティ）
-  - `gna_api`（Gna2* API ラッパ）
+  - `gna_api`（Gna2\* API ラッパ）
   - `gna_lib`（内部ロジック）
   - `kernels`（演算カーネル）
 
@@ -63,6 +63,15 @@
   - `model_api.rs`
   - `request_state.rs`
 
+### 2.6 GNA データモード / データ型の拡張
+
+- `gna-rs/src/gna_api/gna2_types.rs` で `Gna2TensorMode::ConstantScalar` と追加のデータ型を追加。
+- `gna-rs/src/gna_lib/data_mode.rs` で要素サイズマッピングを拡張し、`ConstantScalar` 時の `Int4` 型処理を実装。
+- `gna-rs/src/gna_lib/gna_api/gna2_common_impl.rs` でデバイスバージョン変換、ステータス文字列マップ、汎用マップヘルパーを実装。
+- `gna-rs/src/gna_lib/api_wrapper.rs` で例外安全な API 呼び出しラッパーを実装し、GNA ステータスのフォールバック処理を追加。
+- `gna-rs/src/gna_lib/bias.rs` でバイアスバッファの基本処理と適用ヘルパーを実装。
+- これらの変更は `cargo test -p gna-rs` で確認済み。
+
 ---
 
 ## 3. 未実装部分（移植途中）
@@ -72,19 +81,15 @@
 - `gna-rs/src/gna_lib/activation_function.rs`
 - `gna-rs/src/gna_lib/active_list.rs`
 - `gna-rs/src/gna_lib/affine_functions.rs`
-- `gna-rs/src/gna_lib/api_wrapper.rs`
-- `gna-rs/src/gna_lib/bias.rs`
 - `gna-rs/src/gna_lib/component.rs`
 - `gna-rs/src/gna_lib/convolutional_functions.rs`
 - `gna-rs/src/gna_lib/convolutional_layer.rs`
 - `gna-rs/src/gna_lib/convolutional_layer2d.rs`
 - `gna-rs/src/gna_lib/copy_layer.rs`
-- `gna-rs/src/gna_lib/data_mode.rs`
 - `gna-rs/src/gna_lib/driver_interface.rs`
 - `gna-rs/src/gna_lib/export_device.rs`
 - `gna-rs/src/gna_lib/external_buffer.rs`
 - `gna-rs/src/gna_lib/gmm_layer.rs`
-- `gna-rs/src/gna_lib/gna_api/gna2_common_impl.rs`
 - `gna-rs/src/gna_lib/hardware_layer.rs`
 - `gna-rs/src/gna_lib/layout.rs`
 - `gna-rs/src/gna_lib/linux_driver_interface.rs`
@@ -104,17 +109,21 @@
 
 ## 4. 主要差分ファイル（移植作業の中心）
 
-| 区分 | パス | 内容 |
-|---|---|---|
-| 設計 | `doc/implementation.md` | 移植方針・未実装タスク定義 |
-| クレート | `gna-rs/Cargo.toml` | Rust 移植クレート構成 |
-| API | `gna-rs/src/gna_api/gna2_inference_api.rs` | 推論系 API 実装追加 |
-| 内部ロジック | `gna-rs/src/gna_lib/request.rs` | リクエスト状態管理 |
-| 内部ロジック | `gna-rs/src/gna_lib/request_configuration.rs` | リクエスト設定処理 |
-| サンプル | `gna-rs/examples/request_state.rs` | 状態遷移確認サンプル |
-| テスト | `gna-rs/tests/request_state.rs` | 状態遷移の検証 |
-| 利用率 | `src/instrumentation.rs` | HW 使用率算出ヘルパ |
-| サンプル | `examples/usage_report.rs` | Instrumentation レポート例 |
+| 区分         | パス                                             | 内容                                     |
+| ------------ | ------------------------------------------------ | ---------------------------------------- |
+| 設計         | `doc/implementation.md`                          | 移植方針・未実装タスク定義               |
+| クレート     | `gna-rs/Cargo.toml`                              | Rust 移植クレート構成                    |
+| API          | `gna-rs/src/gna_api/gna2_inference_api.rs`       | 推論系 API 実装追加                      |
+| 内部ロジック | `gna-rs/src/gna_lib/request.rs`                  | リクエスト状態管理                       |
+| 内部ロジック | `gna-rs/src/gna_lib/request_configuration.rs`    | リクエスト設定処理                       |
+| 内部ロジック | `gna-rs/src/gna_lib/gna_api/gna2_common_impl.rs` | 共通 API ヘルパー実装                    |
+| 内部ロジック | `gna-rs/src/gna_lib/api_wrapper.rs`              | API 呼び出しの例外安全ラッパー           |
+| 内部ロジック | `gna-rs/src/gna_lib/bias.rs`                     | バイアスバッファの基本処理と適用ヘルパー |
+| 内部ロジック | `gna-rs/src/gna_lib/data_mode.rs`                | DataMode 型・サイズ処理の拡張            |
+| サンプル     | `gna-rs/examples/request_state.rs`               | 状態遷移確認サンプル                     |
+| テスト       | `gna-rs/tests/request_state.rs`                  | 状態遷移の検証                           |
+| 利用率       | `src/instrumentation.rs`                         | HW 使用率算出ヘルパ                      |
+| サンプル     | `examples/usage_report.rs`                       | Instrumentation レポート例               |
 
 ---
 

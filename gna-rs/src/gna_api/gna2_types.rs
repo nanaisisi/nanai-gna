@@ -32,6 +32,14 @@ pub enum Gna2TensorMode {
     ConstantScalar,
 }
 
+/// Bias modes used by affine operations.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Gna2BiasMode {
+    Default,
+    PerStride,
+    Grouping,
+}
+
 /// Data types (partial)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Gna2DataType {
