@@ -83,4 +83,32 @@
 
 ---
 
-ご要望があれば、このドキュメントを英語版にし、図やフローチャートを追加します。✨
+## 追加：Instrumentation / 使用率 / 使用中判定の現状と今後
+
+### 1. 進捗
+
+- Rust側では `src/instrumentation.rs` に GNA Instrumentation API の結果から使用率を計算するヘルパーが実装済み。
+- `examples/usage_report.rs` で実際に `compute_hw_usage(...)` を呼び出すサンプルがある。
+- `gna-rs/tests/instrumentation_usage.rs` では、`HwTotalCycles` と `HwStallCycles` を収集して使用率を算出するテストが存在する。
+
+### 2. 使用率算出の可能性
+
+- 現状の実装は以下の式を使っている。
+  - `usage = (TotalCycles - StallCycles) / TotalCycles`
+- `TotalCycles` と `StallCycles` の計測ポイントを指定すれば、Rust側で使用率の算出が可能。
+- `compute_hw_usage` は以下の条件を検証する。
+  - 選択ポイントと結果の長さが一致すること
+  - `TotalCycles` と `StallCycles` が両方存在すること
+  - `TotalCycles` が 0 でないこと
+- StallがTotalを超える場合は0.0にクランプされ、負の使用率にはならない。
+
+### 3. 現在使用中か否かの判別
+
+- Rust側は `gna-rs/src/gna_lib/request.rs` にリクエストのライフサイクル状態管理を追加し、`Pending` / `InFlight` / `Completed` を問い合わせできるようになった。
+- `gna-rs` の現行実装では、`Gna2RequestEnqueue()` → `Gna2RequestWait()` → `Gna2RequestGetInstrumentationResults()` に加えて、`Gna2RequestGetState(request_id)` と `Gna2RequestIsInFlight(request_id)` で現在の処理状態を確認できる。
+- これにより、実行中判定をアプリケーション側で行いやすくなった。
+- 既存のInstrumentationポイントには、`LibDeviceRequestReady` / `LibDeviceRequestSent` / `LibDeviceRequestCompleted` のようなライフサイクル情報が含まれており、これを追加の判定ロジックに組み込めばより正確な「使用中判定」も可能になる。
+
+---
+
+ご要望があれば、この部分も英語版に翻訳し、実装候補コード例を追加します。✨

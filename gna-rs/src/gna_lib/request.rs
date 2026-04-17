@@ -3,18 +3,24 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Skeleton for `Request` and request lifecycle management.
-
 use crate::gna_lib::RequestConfiguration;
+use std::collections::{BTreeMap, VecDeque};
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
-use std::collections::VecDeque;
-use std::time::{Duration, Instant};
 use std::thread;
+use std::time::{Duration, Instant};
 
 #[derive(Debug)]
 pub struct Request {
     pub id: u32,
     pub config: RequestConfiguration,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RequestState {
+    Pending,
+    InFlight,
+    Completed,
 }
 
 static NEXT_REQUEST_ID: AtomicU32 = AtomicU32::new(1);
@@ -30,14 +36,19 @@ impl Request {
 
 lazy_static::lazy_static! {
     static ref REQUEST_QUEUE: Arc<Mutex<VecDeque<Request>>> = Arc::new(Mutex::new(VecDeque::new()));
+    static ref REQUEST_STATES: Arc<Mutex<BTreeMap<u32, RequestState>>> = Arc::new(Mutex::new(BTreeMap::new()));
     // Store simulated instrumentation results for finished requests
-    static ref FINISHED_RESULTS: Arc<Mutex<std::collections::BTreeMap<u32, Vec<u64>>>> = Arc::new(Mutex::new(std::collections::BTreeMap::new()));
+    static ref FINISHED_RESULTS: Arc<Mutex<BTreeMap<u32, Vec<u64>>>> = Arc::new(Mutex::new(BTreeMap::new()));
 }
 
 pub fn enqueue_request(config: RequestConfiguration) -> u32 {
     let req = Request::new(config);
     let id = req.id;
     REQUEST_QUEUE.lock().unwrap().push_back(req);
+    REQUEST_STATES
+        .lock()
+        .unwrap()
+        .insert(id, RequestState::Pending);
     id
 }
 
@@ -48,15 +59,21 @@ pub fn wait_request(request_id: u32, timeout_ms: u32) -> bool {
         {
             let mut q = REQUEST_QUEUE.lock().unwrap();
             if let Some(pos) = q.iter().position(|r| r.id == request_id) {
-                // simulate processing duration based on a tiny sleep to emulate work
                 let req = q.remove(pos).unwrap();
+                REQUEST_STATES
+                    .lock()
+                    .unwrap()
+                    .insert(req.id, RequestState::InFlight);
+                let instrumentation_points = req.config.instrumentation_points.clone();
+
                 // simulate execution time
-                thread::sleep(Duration::from_millis(1));
+                thread::sleep(Duration::from_millis(10));
+
                 // simulate instrumentation results if requested
-                if !req.config.instrumentation_points.is_empty() {
+                if !instrumentation_points.is_empty() {
                     // simple simulation: total cycles proportional to 1000, stall 200
                     let mut results = Vec::new();
-                    for &pt in req.config.instrumentation_points.iter() {
+                    for &pt in instrumentation_points.iter() {
                         match pt {
                             crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwTotalCycles => results.push(1000u64),
                             crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwStallCycles => results.push(200u64),
@@ -65,6 +82,10 @@ pub fn wait_request(request_id: u32, timeout_ms: u32) -> bool {
                     }
                     FINISHED_RESULTS.lock().unwrap().insert(req.id, results);
                 }
+                REQUEST_STATES
+                    .lock()
+                    .unwrap()
+                    .insert(request_id, RequestState::Completed);
                 return true;
             }
         }
@@ -78,4 +99,14 @@ pub fn wait_request(request_id: u32, timeout_ms: u32) -> bool {
 /// Retrieve instrumentation results for a finished request, if any.
 pub fn get_instrumentation_results(request_id: u32) -> Option<Vec<u64>> {
     FINISHED_RESULTS.lock().unwrap().remove(&request_id)
+}
+
+/// Query the current lifecycle state for a request.
+pub fn get_request_state(request_id: u32) -> Option<RequestState> {
+    REQUEST_STATES.lock().unwrap().get(&request_id).copied()
+}
+
+/// Returns true when the request is currently in-flight.
+pub fn is_request_in_flight(request_id: u32) -> bool {
+    get_request_state(request_id) == Some(RequestState::InFlight)
 }

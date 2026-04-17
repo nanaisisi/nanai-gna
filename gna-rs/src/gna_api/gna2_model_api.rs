@@ -7,7 +7,18 @@
 /// Opaque model handle used in the original API.
 #[derive(Debug, Clone, Default)]
 pub struct Gna2Model {
-    // fields will be filled during porting
+    pub operations: Vec<Gna2Operation>,
+}
+
+impl Gna2Model {
+    pub fn new() -> Self { Self { operations: Vec::new() } }
+
+    pub fn add_operation(&mut self, op: Gna2Operation) -> u32 {
+        self.operations.push(op);
+        (self.operations.len() - 1) as u32
+    }
+
+    pub fn operation_count(&self) -> u32 { self.operations.len() as u32 }
 }
 
 /// Tensor/shape placeholders
@@ -48,3 +59,14 @@ pub use crate::gna_api::types::{INPUT_OPERAND_INDEX, OUTPUT_OPERAND_INDEX, SCRAT
 pub type ApiModel = Gna2Model;
 pub type ApiShape = Gna2Shape;
 pub type ApiTensor = Gna2Tensor;
+
+/// Create a model instance
+pub fn Gna2ModelCreate() -> Gna2Model { Gna2Model::new() }
+
+/// Add an operation to the model and return its index
+pub fn Gna2ModelAddOperation(model: &mut Gna2Model, op: Gna2Operation) -> u32 { model.add_operation(op) }
+
+/// Compile the model into a `CompiledModel` (software-only placeholder)
+pub fn Gna2ModelCompile(model: &Gna2Model) -> crate::gna_lib::CompiledModel {
+    crate::gna_lib::compiled_model::CompiledModel::new(model.clone())
+}

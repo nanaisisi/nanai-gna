@@ -4,12 +4,20 @@
 */
 /// Skeleton for `CompiledModel` from `gna-lib`.
 
-/// Represents a compiled model (placeholder).
-#[derive(Debug, Default)]
+/// Represents a compiled model (simplified placeholder).
+#[derive(Debug, Clone)]
 pub struct CompiledModel {
-    // TODO: fields for model id, device bindings, layout
+    id: u32,
+    pub model: crate::gna_api::model_api::Gna2Model,
 }
 
+static NEXT_COMPILED_MODEL_ID: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(1);
+
 impl CompiledModel {
-    pub fn new() -> Self { Self::default() }
+    pub fn new(model: crate::gna_api::model_api::Gna2Model) -> Self {
+        let id = NEXT_COMPILED_MODEL_ID.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        Self { id, model }
+    }
+
+    pub fn id(&self) -> u32 { self.id }
 }
