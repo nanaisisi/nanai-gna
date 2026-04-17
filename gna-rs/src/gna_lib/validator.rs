@@ -6,8 +6,11 @@
 /// Stub for Validator
 
 #[allow(dead_code)]
+#[derive(Debug, Clone)]
 pub struct Validator;
 
 impl Validator {
-    pub fn validate(&self) -> bool { true }
+    pub fn validate(&self) -> bool {
+        true
+    }
 }

@@ -3,14 +3,14 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 
-/// Minimal Rust port of the GNA LinuxDriverInterface helper.
+/// Minimal Rust port of the GNA WindowsDriverInterface helper.
 #[derive(Debug)]
-pub struct LinuxDriverInterface {
+pub struct WindowsDriverInterface {
     device_index: u32,
     opened: bool,
 }
 
-impl LinuxDriverInterface {
+impl WindowsDriverInterface {
     pub fn new(device_index: u32) -> Self {
         Self {
             device_index,
@@ -30,11 +30,11 @@ impl LinuxDriverInterface {
 
 #[cfg(test)]
 mod tests {
-    use super::LinuxDriverInterface;
+    use super::WindowsDriverInterface;
 
     #[test]
-    fn linux_driver_interface_open_marks_instance_as_open() {
-        let mut driver = LinuxDriverInterface::new(0);
+    fn windows_driver_interface_open_marks_instance_as_open() {
+        let mut driver = WindowsDriverInterface::new(0);
         assert!(!driver.is_open());
 
         assert!(driver.open());

@@ -1,5 +1,4 @@
 /// High-level GNA library components ported from `gna-lib`.
-
 pub mod buffer_map;
 pub use buffer_map::BufferMap;
 
@@ -40,7 +39,9 @@ pub mod model_wrapper;
 pub use model_wrapper::ModelWrapper;
 
 pub mod software_model;
-pub use software_model::{SoftwareModel, SoftwareOnlyModel};
+pub use software_model::SoftwareModel;
+pub mod software_only_model;
+pub use software_only_model::SoftwareOnlyModel;
 
 pub mod memory;
 pub use memory::*;
@@ -104,7 +105,10 @@ pub mod layer_input;
 pub mod layer_output;
 pub mod layout;
 pub mod linux_driver_interface;
+pub use linux_driver_interface::LinuxDriverInterface;
 pub mod logger;
+pub mod windows_driver_interface;
+pub use windows_driver_interface::WindowsDriverInterface;
 pub mod memory_container;
 pub mod model_export_config;
 pub mod parameter_limits;
@@ -116,8 +120,8 @@ pub mod recurrent_function;
 pub mod recurrent_layer;
 pub mod request_handler;
 pub mod shape;
-pub mod sub_model;
 pub mod string_helper;
+pub mod sub_model;
 pub mod thread_pool;
 pub mod threshold_parameters;
 pub mod transpose_layer;

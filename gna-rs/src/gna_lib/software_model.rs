@@ -10,8 +10,17 @@ pub struct SoftwareModel {
 }
 
 impl SoftwareModel {
-    pub fn new() -> Self { Self {} }
+    pub fn new() -> Self {
+        Self {}
+    }
 }
 
-#[derive(Debug)]
-pub struct SoftwareOnlyModel(pub SoftwareModel);
+#[cfg(test)]
+mod tests {
+    use super::SoftwareModel;
+
+    #[test]
+    fn software_model_new_creates_instance() {
+        let _model = SoftwareModel::new();
+    }
+}

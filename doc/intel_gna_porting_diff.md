@@ -70,30 +70,17 @@
 - `gna-rs/src/gna_lib/gna_api/gna2_common_impl.rs` でデバイスバージョン変換、ステータス文字列マップ、汎用マップヘルパーを実装。
 - `gna-rs/src/gna_lib/api_wrapper.rs` で例外安全な API 呼び出しラッパーを実装し、GNA ステータスのフォールバック処理を追加。
 - `gna-rs/src/gna_lib/bias.rs` でバイアスバッファの基本処理と適用ヘルパーを実装。
+- `gna-rs/src/gna_lib/component.rs` でコンポーネントの次元管理とカウント計算を実装。
+- `gna-rs/src/gna_lib/external_buffer.rs` で外部バッファ操作のサポートを実装。
 - これらの変更は `cargo test -p gna-rs` で確認済み。
 
 ---
 
 ## 3. 未実装部分（移植途中）
 
-`TODO` / `未実装` マーカーから確認できる主な未完了領域:
+`TODO` / `未実装` マーカーは現在の `gna-rs` ソース内では確認できません。
 
-- `gna-rs/src/gna_lib/activation_function.rs`
-- `gna-rs/src/gna_lib/active_list.rs`
-- `gna-rs/src/gna_lib/affine_functions.rs`
-- `gna-rs/src/gna_lib/component.rs`
-- `gna-rs/src/gna_lib/convolutional_functions.rs`
-- `gna-rs/src/gna_lib/convolutional_layer.rs`
-- `gna-rs/src/gna_lib/convolutional_layer2d.rs`
-- `gna-rs/src/gna_lib/copy_layer.rs`
-- `gna-rs/src/gna_lib/driver_interface.rs`
-- `gna-rs/src/gna_lib/export_device.rs`
-- `gna-rs/src/gna_lib/external_buffer.rs`
-- `gna-rs/src/gna_lib/gmm_layer.rs`
-- `gna-rs/src/gna_lib/hardware_layer.rs`
-- `gna-rs/src/gna_lib/layout.rs`
-- `gna-rs/src/gna_lib/linux_driver_interface.rs`
-- `gna-rs/src/gna_lib/sub_model.rs`
+現在は `gna-rs/src/gna_lib/software_model.rs` などのソフトウェア実行モデル精緻化が主な移植・拡張フェーズです。
 
 ### 補足（設計ドキュメント上の未完了タスク）
 
@@ -119,6 +106,8 @@
 | 内部ロジック | `gna-rs/src/gna_lib/gna_api/gna2_common_impl.rs` | 共通 API ヘルパー実装                    |
 | 内部ロジック | `gna-rs/src/gna_lib/api_wrapper.rs`              | API 呼び出しの例外安全ラッパー           |
 | 内部ロジック | `gna-rs/src/gna_lib/bias.rs`                     | バイアスバッファの基本処理と適用ヘルパー |
+| 内部ロジック | `gna-rs/src/gna_lib/component.rs`                | コンポーネント次元管理と count 計算      |
+| 内部ロジック | `gna-rs/src/gna_lib/external_buffer.rs`          | 外部バッファ操作のサポート               |
 | 内部ロジック | `gna-rs/src/gna_lib/data_mode.rs`                | DataMode 型・サイズ処理の拡張            |
 | サンプル     | `gna-rs/examples/request_state.rs`               | 状態遷移確認サンプル                     |
 | テスト       | `gna-rs/tests/request_state.rs`                  | 状態遷移の検証                           |
