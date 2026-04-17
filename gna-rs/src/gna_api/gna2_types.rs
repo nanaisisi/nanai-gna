@@ -29,13 +29,25 @@ pub enum Gna2TensorMode {
     Default,
     Disabled,
     ExternalBuffer,
+    ConstantScalar,
 }
 
 /// Data types (partial)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Gna2DataType {
     None,
+    Boolean,
+    Int4,
     Int8,
     Int16,
     Int32,
+    Int64,
+    Uint4,
+    Uint8,
+    Uint16,
+    Uint32,
+    Uint64,
+    CompoundBias,
+    PwlSegment,
+    WeightScaleFactor,
 }
