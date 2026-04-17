@@ -107,6 +107,7 @@
 - Rust側は `gna-rs/src/gna_lib/request.rs` にリクエストのライフサイクル状態管理を追加し、`Pending` / `InFlight` / `Completed` を問い合わせできるようになった。
 - `gna-rs` の現行実装では、`Gna2RequestEnqueue()` → `Gna2RequestWait()` → `Gna2RequestGetInstrumentationResults()` に加えて、`Gna2RequestGetState(request_id)` と `Gna2RequestIsInFlight(request_id)` で現在の処理状態を確認できる。
 - これにより、実行中判定をアプリケーション側で行いやすくなった。
+- 新しいサンプル `gna-rs/examples/request_state.rs` が追加され、リクエストの `Pending` / `InFlight` / `Completed` の遷移と Instrumentation 結果の取得を実際に確認できる。
 - 既存のInstrumentationポイントには、`LibDeviceRequestReady` / `LibDeviceRequestSent` / `LibDeviceRequestCompleted` のようなライフサイクル情報が含まれており、これを追加の判定ロジックに組み込めばより正確な「使用中判定」も可能になる。
 
 ---

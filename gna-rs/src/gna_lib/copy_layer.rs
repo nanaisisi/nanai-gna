@@ -5,9 +5,32 @@
 
 /// Stub for CopyLayer (ported from original C++)
 
-#[allow(dead_code)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct CopyLayer;
 
 impl CopyLayer {
-    pub fn copy(&self) { /* TODO */ }
+    pub fn copy<T: Copy>(&self, source: &[T], destination: &mut [T]) {
+        assert_eq!(
+            source.len(),
+            destination.len(),
+            "source and destination must have the same length"
+        );
+        destination.copy_from_slice(source);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::CopyLayer;
+
+    #[test]
+    fn copy_layer_copies_data_into_destination() {
+        let copier = CopyLayer::default();
+        let source = [1i16, 2, 3, 4];
+        let mut destination = [0i16; 4];
+
+        copier.copy(&source, &mut destination);
+
+        assert_eq!(destination, source);
+    }
 }

@@ -32,6 +32,34 @@ impl Request {
     }
 }
 
+fn execution_delay_for_mode(mode: crate::gna_api::inference_api::Gna2AccelerationMode) -> Duration {
+    match mode {
+        crate::gna_api::inference_api::Gna2AccelerationMode::Hardware => Duration::from_millis(5),
+        crate::gna_api::inference_api::Gna2AccelerationMode::Auto => Duration::from_millis(10),
+        crate::gna_api::inference_api::Gna2AccelerationMode::Software => Duration::from_millis(25),
+    }
+}
+
+fn instrumentation_results_for_mode(
+    mode: crate::gna_api::inference_api::Gna2AccelerationMode,
+    points: &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint],
+) -> Vec<u64> {
+    let (total, stall) = match mode {
+        crate::gna_api::inference_api::Gna2AccelerationMode::Hardware => (800u64, 80u64),
+        crate::gna_api::inference_api::Gna2AccelerationMode::Auto => (1000u64, 200u64),
+        crate::gna_api::inference_api::Gna2AccelerationMode::Software => (1800u64, 500u64),
+    };
+
+    points
+        .iter()
+        .map(|&pt| match pt {
+            crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwTotalCycles => total,
+            crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwStallCycles => stall,
+            _ => 0u64,
+        })
+        .collect()
+}
+
 // Simple global request queue used by enqueue/wait helpers in this skeleton.
 
 lazy_static::lazy_static! {
@@ -65,21 +93,14 @@ pub fn wait_request(request_id: u32, timeout_ms: u32) -> bool {
                     .unwrap()
                     .insert(req.id, RequestState::InFlight);
                 let instrumentation_points = req.config.instrumentation_points.clone();
+                let mode = req.config.acceleration_mode;
 
-                // simulate execution time
-                thread::sleep(Duration::from_millis(10));
+                // simulate execution time based on selected acceleration mode
+                thread::sleep(execution_delay_for_mode(mode));
 
                 // simulate instrumentation results if requested
                 if !instrumentation_points.is_empty() {
-                    // simple simulation: total cycles proportional to 1000, stall 200
-                    let mut results = Vec::new();
-                    for &pt in instrumentation_points.iter() {
-                        match pt {
-                            crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwTotalCycles => results.push(1000u64),
-                            crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwStallCycles => results.push(200u64),
-                            _ => results.push(0u64),
-                        }
-                    }
+                    let results = instrumentation_results_for_mode(mode, &instrumentation_points);
                     FINISHED_RESULTS.lock().unwrap().insert(req.id, results);
                 }
                 REQUEST_STATES

@@ -3,7 +3,6 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Skeleton for `RequestConfiguration`.
-
 use crate::common::BaseAddress;
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU32, Ordering};
@@ -13,6 +12,7 @@ pub struct RequestConfiguration {
     pub buffers: BTreeMap<u32, BaseAddress>,
     pub timeout_ms: u32,
     pub config_id: u32,
+    pub acceleration_mode: crate::gna_api::inference_api::Gna2AccelerationMode,
     /// Optional instrumentation points to collect for this request
     pub instrumentation_points: Vec<crate::gna_api::instrumentation_api::Gna2InstrumentationPoint>,
 }
@@ -25,13 +25,16 @@ impl Default for RequestConfiguration {
             buffers: BTreeMap::new(),
             timeout_ms: 1000,
             config_id: NEXT_CONFIG_ID.fetch_add(1, Ordering::Relaxed),
+            acceleration_mode: crate::gna_api::inference_api::Gna2AccelerationMode::default(),
             instrumentation_points: Vec::new(),
         }
     }
 }
 
 impl RequestConfiguration {
-    pub fn new() -> Self { Self::default() }
+    pub fn new() -> Self {
+        Self::default()
+    }
 
     pub fn set_buffer(&mut self, operand_index: u32, addr: BaseAddress) {
         self.buffers.insert(operand_index, addr);
@@ -41,11 +44,27 @@ impl RequestConfiguration {
         self.buffers.get(&operand_index).cloned()
     }
 
-    pub fn set_instrumentation_points(&mut self, pts: &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint]) {
+    pub fn set_instrumentation_points(
+        &mut self,
+        pts: &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint],
+    ) {
         self.instrumentation_points = pts.to_vec();
     }
 
-    pub fn get_instrumentation_points(&self) -> &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint] {
+    pub fn get_instrumentation_points(
+        &self,
+    ) -> &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint] {
         &self.instrumentation_points
+    }
+
+    pub fn set_acceleration_mode(
+        &mut self,
+        mode: crate::gna_api::inference_api::Gna2AccelerationMode,
+    ) {
+        self.acceleration_mode = mode;
+    }
+
+    pub fn get_acceleration_mode(&self) -> crate::gna_api::inference_api::Gna2AccelerationMode {
+        self.acceleration_mode
     }
 }

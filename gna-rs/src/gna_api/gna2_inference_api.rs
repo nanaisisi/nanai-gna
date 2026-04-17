@@ -55,6 +55,19 @@ pub fn Gna2RequestConfigSetInstrumentationPoints(
     cfg.inner.set_instrumentation_points(pts);
 }
 
+/// Set the acceleration mode for this request configuration.
+pub fn Gna2RequestConfigSetAccelerationMode(
+    cfg: &mut Gna2RequestConfig,
+    mode: Gna2AccelerationMode,
+) {
+    cfg.inner.set_acceleration_mode(mode);
+}
+
+/// Get the acceleration mode for this request configuration.
+pub fn Gna2RequestConfigGetAccelerationMode(cfg: &Gna2RequestConfig) -> Gna2AccelerationMode {
+    cfg.inner.get_acceleration_mode()
+}
+
 /// Enqueue request and return request id
 pub fn Gna2RequestEnqueue(cfg: &Gna2RequestConfig) -> u32 {
     crate::gna_lib::request::enqueue_request(cfg.inner.clone())

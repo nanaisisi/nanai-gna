@@ -8,13 +8,13 @@ edition = "2024"
 license = "LGPL-2.1"
 
 [dependencies]
-thiserror = "*"
+thiserror = "2"
 
 [build-dependencies]
-bindgen = "*"
+bindgen = "0.72"
 
 [dev-dependencies]
-clap = { version = "*", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
 
 [features]
 link_gna = []
