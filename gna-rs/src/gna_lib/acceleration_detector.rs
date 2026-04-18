@@ -5,10 +5,13 @@
 
 /// Stub for AccelerationDetector (ported from original C++)
 
+#[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct AccelerationDetector;
 
 impl AccelerationDetector {
     /// Detects available kernels / accelerations (stub).
-    pub fn detect() -> Vec<&'static str> { Vec::new() }
+    pub fn detect() -> Vec<&'static str> {
+        Vec::new()
+    }
 }

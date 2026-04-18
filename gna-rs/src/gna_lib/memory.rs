@@ -3,16 +3,40 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Memory management skeleton (Memory / MemoryContainer)
-
 use crate::common::BaseAddress;
+use crate::gna_lib::driver_interface::DriverInterface;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Memory {
-    // tracking allocations
+    mapped: bool,
 }
 
 impl Memory {
-    pub fn alloc(&self, _bytes: usize) -> BaseAddress { BaseAddress::null() }
+    pub fn alloc(&mut self, _bytes: usize) -> BaseAddress {
+        BaseAddress::null()
+    }
+
+    pub fn map(&mut self, driver_interface: &DriverInterface) -> bool {
+        if driver_interface.is_open() {
+            self.mapped = true;
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn unmap(&mut self, driver_interface: &DriverInterface) -> bool {
+        if self.mapped && driver_interface.is_open() {
+            self.mapped = false;
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn is_mapped(&self) -> bool {
+        self.mapped
+    }
 }
 
 #[derive(Debug)]

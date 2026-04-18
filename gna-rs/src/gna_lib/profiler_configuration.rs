@@ -5,15 +5,22 @@
 
 /// Stub for ProfilerConfiguration
 
+#[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct ProfilerConfiguration {
     enabled: bool,
 }
 
 impl ProfilerConfiguration {
-    pub fn new() -> Self { Self { enabled: false } }
+    pub fn new() -> Self {
+        Self { enabled: false }
+    }
 
-    pub fn enable(&mut self, enable: bool) { self.enabled = enable; }
+    pub fn enable(&mut self, enable: bool) {
+        self.enabled = enable;
+    }
 
-    pub fn is_enabled(&self) -> bool { self.enabled }
+    pub fn is_enabled(&self) -> bool {
+        self.enabled
+    }
 }

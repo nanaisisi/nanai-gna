@@ -18,4 +18,20 @@ impl HardwareCapabilities {
     pub fn get_device_version(&self) -> Gna2DeviceVersion {
         Gna2DeviceVersion(0x30)
     }
+
+    pub fn is_hardware_supported(&self) -> bool {
+        true
+    }
+
+    pub fn validate_operation_count(&self, _count: u32) {
+        // Stubbed validation: accept any operation count.
+    }
+
+    pub fn is_operation_supported(&self, _op: crate::gna_api::types::OperationType) -> bool {
+        true
+    }
+
+    pub fn has_feature(&self, _feature: u32) -> bool {
+        false
+    }
 }

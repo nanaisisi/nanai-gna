@@ -32,11 +32,12 @@ impl RequestBuilder {
     pub fn attach_buffer(
         &mut self,
         config_id: u32,
+        layer_index: u32,
         operand_index: u32,
         address: crate::common::BaseAddress,
     ) -> bool {
         if let Some(config) = self.configurations.get_mut(&config_id) {
-            config.set_buffer(operand_index, address);
+            config.add_buffer(layer_index, operand_index, address);
             true
         } else {
             false
@@ -95,7 +96,7 @@ mod tests {
         builder.create_configuration(config);
 
         let address = BaseAddress::from(0 as *mut u8);
-        assert!(builder.attach_buffer(config_id, 1, address));
+        assert!(builder.attach_buffer(config_id, 0, 1, address));
         let saved = builder.get_configuration(config_id).unwrap();
         assert_eq!(saved.get_buffer(1), Some(address));
     }

@@ -15,16 +15,23 @@ pub struct HardwareLayer {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
 pub enum NnopType {
-    Affine,
-    AffineActiveList,
-    Gmm,
-    GmmActiveList,
-    Cnn,
-    Rnn,
-    Copy,
-    Transposition,
-    Unknown,
+    Affine = 0,
+    AffineActiveList = 1,
+    Gmm = 2,
+    GmmActiveList = 3,
+    Cnn = 4,
+    Rnn = 5,
+    Copy = 6,
+    Transposition = 7,
+    Unknown = 255,
+}
+
+impl NnopType {
+    pub fn as_u32(self) -> u32 {
+        self as u32
+    }
 }
 
 impl HardwareLayer {
@@ -38,6 +45,8 @@ impl HardwareLayer {
     const ACT_LIST_N_ELEMS: &'static str = "act_list_n_elems";
     const GMM_DESCRIPTOR: &'static str = "gmm_descriptor";
     const GMM_SCRLEN: &'static str = "gmmscrlen";
+    const INTERMEDIATE_OUTPUT_BUFFER: &'static str = "intermediate_output_buffer";
+    const FEEDBACK_BUFFER: &'static str = "feedback_buffer";
     const OP: &'static str = "op";
     const XNN_DESCRIPTOR_OFFSET: &'static str = "xnn_descriptor_offset";
 
@@ -141,6 +150,18 @@ impl HardwareLayer {
 
     pub fn get_ld_scrlen_offset(&self) -> u32 {
         self.descriptor_offset(Self::GMM_SCRLEN)
+    }
+
+    pub fn get_ld_intermediate_output_offset(&self) -> u32 {
+        self.descriptor_offset(Self::INTERMEDIATE_OUTPUT_BUFFER)
+    }
+
+    pub fn get_ld_feedback_offset(&self) -> u32 {
+        self.descriptor_offset(Self::FEEDBACK_BUFFER)
+    }
+
+    pub fn descriptor(&self) -> &LayerDescriptor {
+        &self.descriptor
     }
 
     pub fn get_nn_op_type(&self, has_active_list: bool) -> NnopType {

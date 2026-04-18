@@ -78,19 +78,35 @@
 
 ## 3. 未実装部分（移植途中）
 
-`TODO` / `未実装` マーカーは現在の `gna-rs` ソース内では確認できません。
+現時点で `gna-rs` ソース内に `TODO` や `未実装` の文字列はほぼ見当たりませんが、コード上には多くの「スケルトン／スタブ実装」が残っています。これらは「実装済みではあるが本番用の挙動を持たない」状態を意味します。
 
-現在は `gna-rs/src/gna_lib/software_model.rs` などのソフトウェア実行モデル精緻化が主な移植・拡張フェーズです。
+### 3.1 明確な未実装領域
 
-### 補足（設計ドキュメント上の未完了タスク）
+- `gna-rs/src/gna_api/gna2_*_impl.rs` 系: ほとんどが C++ API のラッパ実装としてスタブ化されている。
+- `gna-rs/src/gna_lib/*.rs` の多数モジュール: `active_list`, `affine_layers`, `bias`, `copy_layer`, `hw_module_interface`, `layer`, `recurrent_layer`, `software_only_model`, `transform`, `weight` などが「スケルトン実装」で残存。
+- `gna-rs/src/gna_lib/kernels/*.rs`: `affine_*`, `convnet_*`, `gmm`, `rnn_*`, `transpose*`, `igemv*`, `igemm*` など、多数のカーネルが自動生成スタブとなっている。
+- `gna-rs/src/gna_lib/hardware_*` / `device*`: `hardware_capabilities`, `hardware_model_*`, `device`, `device_manager`, `driver_interface` などの部分は簡易化されたダミー実装で、実際のデバイス検出・メモリ管理を再現していない。
 
-`doc/implementation.md` では、以下が優先タスクとして整理されている。
+### 3.2 ドキュメント化すべき実装差異
 
-1. `gna_api` の残関数（モデル作成/破棄、詳細メモリ API 等）の実装
-2. `gna_lib` の Layer / Transform 実装完了
-3. カーネル（transpose / affine / gmm など）の段階実装
-4. `load_test` への instrumentation 統合
-5. CI 整備と警告対応
+以下の点を、未実装状態としてドキュメントに明示すると信頼性が高まります。
+
+1. `gna-rs` には「動作検証用の構造体・APIラッパは存在するが、内部処理はスタブ」であるモジュールが多い。
+2. `gna_api` の `gna2-*` 実装ファイルは、C++ APIの呼び出しインタフェースを模しているが、実際の GNA 演算を行うものではない。
+3. `gna_lib` の主要演算ロジック（Layer/Transform/Kernels）は、まだ本格的な計算実装が完了していない。
+4. `software_model` / `hybrid_model` も、現時点では簡易な挙動を提供する骨組みが中心であり、C++ベースの完全実装には至っていない。
+
+### 3.3 追加すべき注記
+
+- 「未実装」は `TODO` ではなく、`gna-rs` の設計方針として段階的に置き換え中の『スタブ実装』という状態で存在している。
+- そのため、`doc/intel_gna_porting_diff.md` では「現在のコードベースでの実装完了度合い」や「スタブ状態の領域」を記述する方が正確です。
+
+### 3.4 参考: 実装済みだが限定的な領域
+
+- `gna-rs/src/gna_lib/component.rs`: 部分的に実装済み（Shape/Count/Validatorの基本処理）。
+- `gna-rs/src/gna_lib/tensor.rs`: 基本的な `Tensor` 構造とバッファ検証を実装。
+- `gna-rs/src/gna_lib/data_mode.rs`: データ型／モード変換の基本実装。
+- `gna-rs/src/gna_lib/request.rs` / `request_configuration.rs`: リクエストライフサイクルの骨組みと設定。
 
 ---
 

@@ -5,11 +5,32 @@
 use crate::gna_api::device_api::Gna2DeviceVersion;
 
 /// Minimal Rust port of the GNA `DriverInterface` helper.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct DriverInterface {
     device_index: u32,
     opened: bool,
     device_version: Gna2DeviceVersion,
+}
+
+#[derive(Debug, Clone)]
+pub struct DriverPerf {
+    pub preprocessing: u32,
+    pub processing: u32,
+    pub device_request_completed: u32,
+    pub completion: u32,
+}
+
+#[derive(Debug, Clone)]
+pub struct HardwarePerf {
+    pub total: u32,
+    pub stall: u32,
+}
+
+#[derive(Debug, Clone)]
+pub struct DriverSubmissionResult {
+    pub status: u32,
+    pub driver_perf: DriverPerf,
+    pub hardware_perf: HardwarePerf,
 }
 
 impl DriverInterface {
@@ -42,6 +63,19 @@ impl DriverInterface {
 
     pub fn device_version(&self) -> Gna2DeviceVersion {
         self.device_version
+    }
+
+    pub fn submit_request(&self, _request_config_id: u32) -> DriverSubmissionResult {
+        DriverSubmissionResult {
+            status: 0,
+            driver_perf: DriverPerf {
+                preprocessing: 0,
+                processing: 0,
+                device_request_completed: 0,
+                completion: 0,
+            },
+            hardware_perf: HardwarePerf { total: 0, stall: 0 },
+        }
     }
 }
 

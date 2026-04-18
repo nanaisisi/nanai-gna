@@ -39,7 +39,7 @@ impl Default for Gna2Tensor {
 }
 
 /// Operation structure similar to the C API representation used by the wrapper.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Gna2Operation {
     pub op_type: crate::gna_api::types::OperationType,
     pub number_of_operands: u32,

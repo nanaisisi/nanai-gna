@@ -94,6 +94,7 @@ pub mod hardware_model;
 pub mod hardware_model_no_mmu;
 pub mod hardware_model_scorable;
 pub mod hardware_model_sue1;
+pub mod hardware_model_target;
 pub mod hardware_request;
 pub mod hw_module_interface;
 pub mod hybrid_device;

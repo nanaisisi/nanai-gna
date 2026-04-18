@@ -19,5 +19,45 @@ impl CompiledModel {
         Self { id, model }
     }
 
-    pub fn id(&self) -> u32 { self.id }
+    pub fn id(&self) -> u32 {
+        self.id
+    }
+
+    pub fn operation_count(&self) -> u32 {
+        self.model.operation_count()
+    }
+
+    pub fn get_operation(&self, operation_index: usize) -> Option<&crate::gna_api::model_api::Gna2Operation> {
+        self.model.operations.get(operation_index)
+    }
+
+    pub fn get_operations(&self) -> &[crate::gna_api::model_api::Gna2Operation] {
+        &self.model.operations
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::CompiledModel;
+    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_api::types::OperationType;
+
+    #[test]
+    fn compiled_model_tracks_id_and_operations() {
+        let mut model = Gna2Model::new();
+        let op = Gna2Operation {
+            op_type: OperationType::Copy,
+            number_of_operands: 0,
+            number_of_parameters: 0,
+            operands: vec![],
+            parameters: vec![],
+        };
+        model.add_operation(op.clone());
+        let compiled = CompiledModel::new(model);
+
+        assert!(compiled.id() > 0);
+        assert_eq!(compiled.operation_count(), 1);
+        assert_eq!(compiled.get_operation(0), Some(&op));
+        assert_eq!(compiled.get_operations().len(), 1);
+    }
 }

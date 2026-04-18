@@ -66,6 +66,8 @@ impl HardwareModel {
                 descriptor.set_parameter("pwl_seg_def_buffer", (index as u32) * 64 + 0x50);
                 descriptor.set_parameter("act_list_buffer", (index as u32) * 64 + 0x60);
                 descriptor.set_parameter("act_list_n_elems", (index as u32) * 64 + 0x70);
+                descriptor.set_parameter("intermediate_output_buffer", (index as u32) * 64 + 0xA0);
+                descriptor.set_parameter("feedback_buffer", (index as u32) * 64 + 0xA4);
                 descriptor.set_parameter("gmm_descriptor", (index as u32) * 16 + 0x80);
                 descriptor.set_parameter("gmmscrlen", (index as u32) * 16 + 0x90);
 

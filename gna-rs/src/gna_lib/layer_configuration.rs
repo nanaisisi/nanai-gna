@@ -5,11 +5,13 @@
 
 /// Skeleton for `LayerConfiguration`.
 use crate::common::BaseAddress;
+use crate::gna_lib::active_list::ActiveList;
 use crate::gna_lib::buffer_map::BufferMap;
 
 #[derive(Debug, Default, Clone)]
 pub struct LayerConfiguration {
     pub buffers: BufferMap,
+    pub active_list: Option<ActiveList>,
     // other config: activation lists, config lists
 }
 
@@ -38,8 +40,30 @@ impl LayerConfiguration {
         self.buffers.erase(&operand_index);
     }
 
+    pub fn set_active_list(&mut self, active_list: ActiveList) -> bool {
+        if self.active_list.is_some() {
+            false
+        } else {
+            self.active_list = Some(active_list);
+            true
+        }
+    }
+
+    pub fn get_active_list(&self) -> Option<&ActiveList> {
+        self.active_list.as_ref()
+    }
+
+    pub fn has_active_list(&self) -> bool {
+        self.active_list.is_some()
+    }
+
+    pub fn clear_active_list(&mut self) {
+        self.active_list = None;
+    }
+
     pub fn clear(&mut self) {
         self.buffers = BufferMap::new();
+        self.active_list = None;
     }
 }
 

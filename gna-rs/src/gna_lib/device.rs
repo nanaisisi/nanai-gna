@@ -8,6 +8,7 @@ use crate::common::BaseAddress;
 use crate::gna_api::device_api::Gna2DeviceVersion;
 use crate::gna_api::model_api::Gna2Model;
 use crate::gna_lib::acceleration_detector::AccelerationDetector;
+use crate::gna_lib::active_list::ActiveList;
 use crate::gna_lib::compiled_model::CompiledModel;
 use crate::gna_lib::driver_interface::DriverInterface;
 use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
@@ -17,6 +18,7 @@ use crate::gna_lib::request_configuration::RequestConfiguration;
 use crate::gna_lib::request_handler::RequestHandler;
 
 /// Simplified Rust port of the GNA `Device` helper.
+#[derive(Debug)]
 pub struct Device {
     version: Gna2DeviceVersion,
     number_of_threads: u32,
@@ -61,6 +63,12 @@ impl Device {
         model_id
     }
 
+    pub fn load_compiled_model(&mut self, compiled_model: CompiledModel) -> u32 {
+        let model_id = compiled_model.id();
+        self.models.insert(model_id, compiled_model);
+        model_id
+    }
+
     pub fn get_model(&self, model_id: u32) -> Option<&CompiledModel> {
         self.models.get(&model_id)
     }
@@ -73,11 +81,11 @@ impl Device {
         &mut self,
         config_id: u32,
         operand_index: u32,
-        _layer_index: u32,
+        layer_index: u32,
         address: BaseAddress,
     ) -> bool {
         self.request_builder
-            .attach_buffer(config_id, operand_index, address)
+            .attach_buffer(config_id, layer_index, operand_index, address)
     }
 
     pub fn create_configuration(&mut self, model_id: u32) -> Option<u32> {
@@ -114,13 +122,20 @@ impl Device {
 
     pub fn attach_active_list(
         &mut self,
-        _config_id: u32,
-        _layer_index: u32,
-        _indices_count: u32,
-        _indices: &[u32],
+        config_id: u32,
+        layer_index: u32,
+        indices_count: u32,
+        indices: &[u32],
     ) -> bool {
-        // Stubbed: active list attachment is not modeled yet.
-        true
+        if let Some(config) = self.request_builder.get_configuration_mut(config_id) {
+            let mut active_list = ActiveList::new();
+            for &index in indices.iter().take(indices_count as usize) {
+                active_list.add(index as usize);
+            }
+            config.add_active_list(layer_index, active_list)
+        } else {
+            false
+        }
     }
 
     pub fn propagate_request(&mut self, config_id: u32) -> Option<u32> {
@@ -198,5 +213,22 @@ mod tests {
         let device = Device::new(Gna2DeviceVersion(0x30));
         assert!(device.is_version_consistent(Gna2DeviceVersion(0x30)));
         assert!(!device.is_version_consistent(Gna2DeviceVersion(0x20)));
+    }
+
+    #[test]
+    fn device_attach_active_list_updates_request_config() {
+        let mut device = Device::new(Gna2DeviceVersion(0x30));
+        let model = Gna2Model::new();
+        let model_id = device.load_model(&model);
+        let config_id = device.create_configuration(model_id).unwrap();
+
+        assert!(device.attach_active_list(config_id, 0, 2, &[10, 20]));
+        let config = device.request_builder.get_configuration(config_id).unwrap();
+        let layer_config = config.get_layer_configuration(0).unwrap();
+
+        assert!(layer_config.has_active_list());
+        assert_eq!(layer_config.get_active_list().unwrap().len(), 2);
+        assert!(layer_config.get_active_list().unwrap().contains(10));
+        assert!(layer_config.get_active_list().unwrap().contains(20));
     }
 }
