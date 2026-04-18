@@ -11,6 +11,16 @@
 
 ---
 
+## 進捗状況 ✅
+
+- `gna-rs/src/gna_lib` において、`LayerDescriptor`、`LayerInput`、`LayerOutput`、`LayerCapabilities` を実装。
+- `LayerDescriptor` はレイヤーパラメータの格納・取得と文字列化をサポート。
+- `LayerInput`/`LayerOutput` はバッファと `grouping` / `element_count` を持つ実装に拡張され、入出力データ状態を保持可能。
+- `LayerCapabilities` はサポート演算タイプの判定と、データモードのデカルト生成を実装。
+- これらの更新は `cargo test -p gna-rs` で検証済み。
+
+---
+
 ## 高レベル設計 💡
 
 - ワークスペースに新しいクレート `gna-rs` を追加し、以下のレイヤーに分割して移植:
@@ -50,7 +60,7 @@
 ## 未実装 / 優先タスク（TODO） 📝
 
 1. `gna_api` の残りの関数を実装する（モデル作成／破棄、詳細なメモリAPI等）。
-2. `gna_lib` の Layer / Transform 実装を完了して、ソフトウェア実行経路を動かす。
+2. `gna_lib` の Layer / Transform 実装を完了して、ソフトウェア実行経路を動かす。`LayerDescriptor` / `LayerInput` / `LayerOutput` / `LayerCapabilities` は先行実装済み。
 3. カーネル実装を段階的に追加（transpose / affine / gmm など）。
 4. `load_test` に `--instrument` を追加し、InstrumentationをRustバックエンドへ統合。
 5. 未使用importや命名規則のワーニング修正、CIワークフロー追加。
