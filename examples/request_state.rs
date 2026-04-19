@@ -1,5 +1,5 @@
-use gna_rs::gna_api::inference_api::*;
-use gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint::{
+use nanai_gna::gna_rs::gna_api::inference_api::*;
+use nanai_gna::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint::{
     HwStallCycles, HwTotalCycles,
 };
 use std::{thread, time::Duration};

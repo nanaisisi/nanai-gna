@@ -1,0 +1,7 @@
+[package]
+name = "nanai-gna"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+nanai-gna = { git = "https://github.com/nanai-gna/nanai-gna.git" }

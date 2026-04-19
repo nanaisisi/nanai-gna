@@ -28,6 +28,7 @@ pub mod instrumentation;
 
 #[cfg(feature = "rust_backend")]
 pub mod backend;
+pub mod gna_rs;
 
 #[cfg(test)]
 mod tests {
