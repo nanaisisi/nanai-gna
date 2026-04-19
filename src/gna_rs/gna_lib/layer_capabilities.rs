@@ -2,8 +2,8 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::types::{Gna2DataType, Gna2TensorMode, OperationType};
-use crate::gna_lib::data_mode::DataMode;
+use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode, OperationType};
+use crate::gna_rs::gna_lib::data_mode::DataMode;
 
 /// Simplified Rust port of the GNA `LayerCapabilities` helper.
 #[derive(Debug, Clone, Copy)]
@@ -51,7 +51,7 @@ impl LayerCapabilities {
 #[cfg(test)]
 mod tests {
     use super::LayerCapabilities;
-    use crate::gna_api::types::{Gna2DataType, Gna2TensorMode, OperationType};
+    use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode, OperationType};
 
     #[test]
     fn supported_operations_include_copy_and_convolution() {

@@ -2,8 +2,8 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_lib::driver_interface::{DriverPerf, DriverSubmissionResult, HardwarePerf};
-use crate::gna_lib::hardware_request::HardwareRequest;
+use crate::gna_rs::gna_lib::driver_interface::{DriverPerf, DriverSubmissionResult, HardwarePerf};
+use crate::gna_rs::gna_lib::hardware_request::HardwareRequest;
 use std::mem::size_of;
 use std::ptr;
 
@@ -152,7 +152,7 @@ fn round_up(value: usize, alignment: usize) -> usize {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_lib::hardware_request::{HardwareRequest, MemoryPatch};
+    use crate::gna_rs::gna_lib::hardware_request::{HardwareRequest, MemoryPatch};
     use std::mem::size_of;
 
     #[test]
@@ -167,7 +167,7 @@ mod tests {
     #[test]
     fn windows_driver_interface_create_request_descriptor_sets_submit_ready() {
         let mut request = HardwareRequest::new(
-            crate::gna_lib::request_configuration::RequestConfiguration::new(),
+            crate::gna_rs::gna_lib::request_configuration::RequestConfiguration::new(),
         );
         request.set_driver_buffer(2, 256);
         request.add_patch(MemoryPatch {
@@ -195,7 +195,7 @@ mod tests {
     #[test]
     fn windows_driver_interface_submit_request_returns_success() {
         let mut request = HardwareRequest::new(
-            crate::gna_lib::request_configuration::RequestConfiguration::new(),
+            crate::gna_rs::gna_lib::request_configuration::RequestConfiguration::new(),
         );
         request.set_driver_buffer(3, 512);
 

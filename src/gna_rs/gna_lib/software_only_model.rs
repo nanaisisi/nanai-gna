@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::model_api::Gna2Model;
-use crate::gna_lib::iscorable::IScorable;
-use crate::gna_lib::software_model::SoftwareModel;
+use crate::gna_rs::gna_api::model_api::Gna2Model;
+use crate::gna_rs::gna_lib::iscorable::IScorable;
+use crate::gna_rs::gna_lib::software_model::SoftwareModel;
 
 /// Stubbed Rust port of the original GNA `SoftwareOnlyModel` helper.
 #[derive(Debug)]
@@ -49,7 +49,7 @@ impl IScorable for SoftwareOnlyModel {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn software_only_model_new_creates_instance() {
@@ -72,7 +72,7 @@ mod tests {
     #[test]
     fn software_only_model_with_model_contains_operations() {
         let mut api_model = Gna2Model::new();
-        api_model.add_operation(crate::gna_api::model_api::Gna2Operation {
+        api_model.add_operation(crate::gna_rs::gna_api::model_api::Gna2Operation {
             op_type: OperationType::Copy,
             number_of_operands: 0,
             number_of_parameters: 0,

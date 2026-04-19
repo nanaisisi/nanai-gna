@@ -2,8 +2,8 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_lib::hardware_request::HardwareRequest;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_lib::hardware_request::HardwareRequest;
 
 /// Minimal Rust port of the GNA `DriverInterface` helper.
 #[derive(Debug, Clone)]
@@ -84,7 +84,7 @@ impl DriverInterface {
 #[cfg(test)]
 mod tests {
     use super::DriverInterface;
-    use crate::gna_api::device_api::Gna2DeviceVersion;
+    use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
 
     #[test]
     fn driver_interface_query_returns_default_version_for_index_zero() {
@@ -103,8 +103,8 @@ mod tests {
     #[test]
     fn driver_interface_submit_request_returns_error_when_not_ready() {
         let driver = DriverInterface::new(0);
-        let config = crate::gna_lib::request_configuration::RequestConfiguration::new();
-        let req = crate::gna_lib::hardware_request::HardwareRequest::new(config);
+        let config = crate::gna_rs::gna_lib::request_configuration::RequestConfiguration::new();
+        let req = crate::gna_rs::gna_lib::hardware_request::HardwareRequest::new(config);
 
         let result = driver.submit_request(&req);
         assert_ne!(result.status, 0);
@@ -113,8 +113,8 @@ mod tests {
     #[test]
     fn driver_interface_submit_request_returns_success_when_ready() {
         let driver = DriverInterface::new(0);
-        let mut config = crate::gna_lib::request_configuration::RequestConfiguration::new();
-        let mut req = crate::gna_lib::hardware_request::HardwareRequest::new(config);
+        let mut config = crate::gna_rs::gna_lib::request_configuration::RequestConfiguration::new();
+        let mut req = crate::gna_rs::gna_lib::hardware_request::HardwareRequest::new(config);
         req.submit_ready = true;
 
         let result = driver.submit_request(&req);

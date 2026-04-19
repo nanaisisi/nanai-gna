@@ -7,7 +7,7 @@
 ///
 /// This is a simplified piecewise-linear evaluator intended to capture
 /// the shape of the original GNA activation segments.
-use crate::gna_lib::kernels::pwl::{PwlSegment, pwl_eval};
+use crate::gna_rs::gna_lib::kernels::pwl::{PwlSegment, pwl_eval};
 
 #[derive(Debug, Clone)]
 pub struct ActivationFunction {
@@ -33,7 +33,7 @@ impl ActivationFunction {
 #[cfg(test)]
 mod tests {
     use super::ActivationFunction;
-    use crate::gna_lib::kernels::pwl::PwlSegment;
+    use crate::gna_rs::gna_lib::kernels::pwl::PwlSegment;
 
     #[test]
     fn activation_function_applies_linear_pwl_segments() {

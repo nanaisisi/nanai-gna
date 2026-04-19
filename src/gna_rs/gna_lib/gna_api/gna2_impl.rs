@@ -6,7 +6,6 @@
 */
 // Auto-generated Rust stub for original: gna/src/gna-lib/gna-api/gna2-impl.h
 
-
 /// Top-level aggregator stub
 
 pub fn init_all_impls() {

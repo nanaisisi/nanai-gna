@@ -5,9 +5,9 @@
 use std::any::Any;
 use std::panic::{AssertUnwindSafe, catch_unwind};
 
-use crate::common::gna_exception::GnaError;
-use crate::gna_api::common_api::Gna2Status;
-use crate::gna_lib::logger::Logger;
+use crate::gna_rs::common::gna_exception::GnaError;
+use crate::gna_rs::gna_api::common_api::Gna2Status;
+use crate::gna_rs::gna_lib::logger::Logger;
 
 /// Rust port of the GNA ApiWrapper helper.
 #[allow(dead_code)]

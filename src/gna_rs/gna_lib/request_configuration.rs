@@ -3,10 +3,10 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Skeleton for `RequestConfiguration`.
-use crate::common::BaseAddress;
-use crate::gna_lib::active_list::ActiveList;
-use crate::gna_lib::layer_configuration::LayerConfiguration;
-use crate::gna_lib::profiler_configuration::ProfilerConfiguration;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_lib::active_list::ActiveList;
+use crate::gna_rs::gna_lib::layer_configuration::LayerConfiguration;
+use crate::gna_rs::gna_lib::profiler_configuration::ProfilerConfiguration;
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU32, Ordering};
 
@@ -17,9 +17,10 @@ pub struct RequestConfiguration {
     pub timeout_ms: u32,
     pub config_id: u32,
     pub active_list_count: u32,
-    pub acceleration_mode: crate::gna_api::inference_api::Gna2AccelerationMode,
+    pub acceleration_mode: crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode,
     /// Optional instrumentation points to collect for this request
-    pub instrumentation_points: Vec<crate::gna_api::instrumentation_api::Gna2InstrumentationPoint>,
+    pub instrumentation_points:
+        Vec<crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint>,
     pub profiler_configuration: Option<ProfilerConfiguration>,
 }
 
@@ -33,7 +34,8 @@ impl Default for RequestConfiguration {
             timeout_ms: 1000,
             config_id: NEXT_CONFIG_ID.fetch_add(1, Ordering::Relaxed),
             active_list_count: 0,
-            acceleration_mode: crate::gna_api::inference_api::Gna2AccelerationMode::default(),
+            acceleration_mode: crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::default(
+            ),
             instrumentation_points: Vec::new(),
             profiler_configuration: None,
         }
@@ -74,25 +76,27 @@ impl RequestConfiguration {
 
     pub fn set_instrumentation_points(
         &mut self,
-        pts: &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint],
+        pts: &[crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint],
     ) {
         self.instrumentation_points = pts.to_vec();
     }
 
     pub fn get_instrumentation_points(
         &self,
-    ) -> &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint] {
+    ) -> &[crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint] {
         &self.instrumentation_points
     }
 
     pub fn set_acceleration_mode(
         &mut self,
-        mode: crate::gna_api::inference_api::Gna2AccelerationMode,
+        mode: crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode,
     ) {
         self.acceleration_mode = mode;
     }
 
-    pub fn get_acceleration_mode(&self) -> crate::gna_api::inference_api::Gna2AccelerationMode {
+    pub fn get_acceleration_mode(
+        &self,
+    ) -> crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode {
         self.acceleration_mode
     }
 
@@ -120,7 +124,7 @@ impl RequestConfiguration {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::BaseAddress;
+    use crate::gna_rs::common::BaseAddress;
 
     #[test]
     fn request_configuration_adds_layer_buffer() {

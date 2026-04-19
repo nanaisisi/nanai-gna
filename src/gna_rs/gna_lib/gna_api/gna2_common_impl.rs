@@ -7,8 +7,8 @@
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
-use crate::gna_api::common_api::Gna2Status;
-use crate::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::common_api::Gna2Status;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
 
 /// Constant used to indicate a disabled value in the API.
 pub const GNA2_DISABLED_U32: u32 = u32::MAX;

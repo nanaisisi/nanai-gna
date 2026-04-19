@@ -4,7 +4,7 @@
 */
 use std::collections::BTreeMap;
 
-use crate::gna_lib::{Request, RequestConfiguration};
+use crate::gna_rs::gna_lib::{Request, RequestConfiguration};
 
 /// Simplified Rust port of the GNA `RequestBuilder` helper.
 #[derive(Debug, Default)]
@@ -34,7 +34,7 @@ impl RequestBuilder {
         config_id: u32,
         layer_index: u32,
         operand_index: u32,
-        address: crate::common::BaseAddress,
+        address: crate::gna_rs::common::BaseAddress,
     ) -> bool {
         if let Some(config) = self.configurations.get_mut(&config_id) {
             config.add_buffer(layer_index, operand_index, address);
@@ -67,7 +67,7 @@ impl RequestBuilder {
 #[cfg(test)]
 mod tests {
     use super::{RequestBuilder, RequestConfiguration};
-    use crate::common::BaseAddress;
+    use crate::gna_rs::common::BaseAddress;
 
     #[test]
     fn request_builder_manages_configuration_lifecycle() {

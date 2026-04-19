@@ -2,13 +2,13 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::common::BaseAddress;
-use crate::gna_api::model_api::ApiTensor;
-use crate::gna_api::types::Gna2TensorMode;
-use crate::gna_lib::component::Component;
-use crate::gna_lib::data_mode::DataMode;
-use crate::gna_lib::shape::Shape;
-use crate::gna_lib::validator::Validator;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::model_api::ApiTensor;
+use crate::gna_rs::gna_api::types::Gna2TensorMode;
+use crate::gna_rs::gna_lib::component::Component;
+use crate::gna_rs::gna_lib::data_mode::DataMode;
+use crate::gna_rs::gna_lib::shape::Shape;
+use crate::gna_rs::gna_lib::validator::Validator;
 
 /// Simplified Rust port of the GNA Tensor helper.
 #[derive(Debug, Clone)]
@@ -126,8 +126,8 @@ impl Tensor {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::BaseAddress;
-    use crate::gna_api::types::{Gna2DataType, Gna2TensorMode};
+    use crate::gna_rs::common::BaseAddress;
+    use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode};
 
     fn default_buffer_validator(buffer: *const u8, size: usize, alignment: u32) -> bool {
         if buffer.is_null() {
@@ -153,11 +153,12 @@ mod tests {
         let data = [0u8; 8];
         let base = BaseAddress::from_ptr(data.as_ptr() as *mut u8);
 
-        let base_validator = crate::gna_lib::validator::BaseValidator::new(
+        let base_validator = crate::gna_rs::gna_lib::validator::BaseValidator::new(
             0,
             std::sync::Arc::new(default_buffer_validator),
         );
-        let layer_validator = crate::gna_lib::validator::LayerValidator::new(&base_validator, 0);
+        let layer_validator =
+            crate::gna_rs::gna_lib::validator::LayerValidator::new(&base_validator, 0);
         let validator = Validator::new(&layer_validator, None, false);
         let mut tensor = Tensor::with_validator(shape, mode, BaseAddress::null(), validator, 1);
         assert!(tensor.update_buffer(base));

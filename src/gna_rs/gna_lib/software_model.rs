@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::inference_api::Gna2AccelerationMode;
-use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-use crate::gna_lib::iscorable::IScorable;
+use crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode;
+use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+use crate::gna_rs::gna_lib::iscorable::IScorable;
 use std::collections::BTreeMap;
 
 /// Simplified Rust port of the GNA `SoftwareModel` helper.
@@ -85,7 +85,7 @@ impl IScorable for SoftwareModel {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn software_model_new_creates_instance() {

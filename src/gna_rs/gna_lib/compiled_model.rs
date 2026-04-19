@@ -8,13 +8,13 @@
 #[derive(Debug, Clone)]
 pub struct CompiledModel {
     id: u32,
-    pub model: crate::gna_api::model_api::Gna2Model,
+    pub model: crate::gna_rs::gna_api::model_api::Gna2Model,
 }
 
 static NEXT_COMPILED_MODEL_ID: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(1);
 
 impl CompiledModel {
-    pub fn new(model: crate::gna_api::model_api::Gna2Model) -> Self {
+    pub fn new(model: crate::gna_rs::gna_api::model_api::Gna2Model) -> Self {
         let id = NEXT_COMPILED_MODEL_ID.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
         Self { id, model }
     }
@@ -27,11 +27,14 @@ impl CompiledModel {
         self.model.operation_count()
     }
 
-    pub fn get_operation(&self, operation_index: usize) -> Option<&crate::gna_api::model_api::Gna2Operation> {
+    pub fn get_operation(
+        &self,
+        operation_index: usize,
+    ) -> Option<&crate::gna_rs::gna_api::model_api::Gna2Operation> {
         self.model.operations.get(operation_index)
     }
 
-    pub fn get_operations(&self) -> &[crate::gna_api::model_api::Gna2Operation] {
+    pub fn get_operations(&self) -> &[crate::gna_rs::gna_api::model_api::Gna2Operation] {
         &self.model.operations
     }
 }
@@ -39,8 +42,8 @@ impl CompiledModel {
 #[cfg(test)]
 mod tests {
     use super::CompiledModel;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn compiled_model_tracks_id_and_operations() {

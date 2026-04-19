@@ -2,8 +2,8 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::types::OperationType;
-use crate::gna_lib::layer_descriptor::LayerDescriptor;
+use crate::gna_rs::gna_api::types::OperationType;
+use crate::gna_rs::gna_lib::layer_descriptor::LayerDescriptor;
 
 /// Simplified Rust port of the GNA `HardwareLayer` helper.
 #[derive(Debug, Clone)]
@@ -191,8 +191,8 @@ impl HardwareLayer {
 #[cfg(test)]
 mod tests {
     use super::{HardwareLayer, NnopType};
-    use crate::gna_api::types::OperationType;
-    use crate::gna_lib::layer_descriptor::LayerDescriptor;
+    use crate::gna_rs::gna_api::types::OperationType;
+    use crate::gna_rs::gna_lib::layer_descriptor::LayerDescriptor;
 
     #[test]
     fn hardware_layer_offsets_come_from_descriptor_parameters() {

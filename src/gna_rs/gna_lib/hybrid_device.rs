@@ -2,13 +2,13 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::model_api::Gna2Model;
-use crate::gna_lib::acceleration_detector::AccelerationDetector;
-use crate::gna_lib::device::Device;
-use crate::gna_lib::driver_interface::DriverInterface;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hybrid_model::HybridModel;
-use crate::gna_lib::memory::Memory;
+use crate::gna_rs::gna_api::model_api::Gna2Model;
+use crate::gna_rs::gna_lib::acceleration_detector::AccelerationDetector;
+use crate::gna_rs::gna_lib::device::Device;
+use crate::gna_rs::gna_lib::driver_interface::DriverInterface;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hybrid_model::HybridModel;
+use crate::gna_rs::gna_lib::memory::Memory;
 
 /// Simplified Rust port of the GNA `HybridDevice` helper.
 #[derive(Debug)]
@@ -72,8 +72,8 @@ impl HybridDevice {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::device_api::Gna2DeviceVersion;
-    use crate::gna_api::model_api::Gna2Model;
+    use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+    use crate::gna_rs::gna_api::model_api::Gna2Model;
 
     #[test]
     fn hybrid_device_create_opens_driver_interface() {

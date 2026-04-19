@@ -3,8 +3,7 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Kernel argument structures (ported from `KernelArguments.h` and related headers).
-
-use crate::common::BaseAddress;
+use crate::gna_rs::common::BaseAddress;
 
 /// Minimal arguments passed to kernels. Expand as needed when porting concrete kernels.
 #[derive(Debug, Clone)]
@@ -22,6 +21,12 @@ pub struct KernelArguments {
 
 impl KernelArguments {
     pub fn new(input: BaseAddress, output: BaseAddress) -> Self {
-        Self { input, output, aux: None, width: 0, height: 0 }
+        Self {
+            input,
+            output,
+            aux: None,
+            width: 0,
+            height: 0,
+        }
     }
 }

@@ -4,9 +4,9 @@
 */
 
 /// Skeleton for `LayerConfiguration`.
-use crate::common::BaseAddress;
-use crate::gna_lib::active_list::ActiveList;
-use crate::gna_lib::buffer_map::BufferMap;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_lib::active_list::ActiveList;
+use crate::gna_rs::gna_lib::buffer_map::BufferMap;
 
 #[derive(Debug, Default, Clone)]
 pub struct LayerConfiguration {
@@ -70,7 +70,7 @@ impl LayerConfiguration {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::BaseAddress;
+    use crate::gna_rs::common::BaseAddress;
 
     #[test]
     fn configuration_can_store_buffers() {

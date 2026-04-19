@@ -2,7 +2,7 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
 
 /// Stub for HardwareCapabilities
 
@@ -27,7 +27,10 @@ impl HardwareCapabilities {
         // Stubbed validation: accept any operation count.
     }
 
-    pub fn is_operation_supported(&self, _op: crate::gna_api::types::OperationType) -> bool {
+    pub fn is_operation_supported(
+        &self,
+        _op: crate::gna_rs::gna_api::types::OperationType,
+    ) -> bool {
         true
     }
 

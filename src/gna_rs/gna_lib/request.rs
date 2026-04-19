@@ -3,7 +3,7 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Skeleton for `Request` and request lifecycle management.
-use crate::gna_lib::RequestConfiguration;
+use crate::gna_rs::gna_lib::RequestConfiguration;
 use std::collections::{BTreeMap, VecDeque};
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
@@ -32,29 +32,29 @@ impl Request {
     }
 }
 
-fn execution_delay_for_mode(mode: crate::gna_api::inference_api::Gna2AccelerationMode) -> Duration {
+fn execution_delay_for_mode(mode: crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode) -> Duration {
     match mode {
-        crate::gna_api::inference_api::Gna2AccelerationMode::Hardware => Duration::from_millis(5),
-        crate::gna_api::inference_api::Gna2AccelerationMode::Auto => Duration::from_millis(10),
-        crate::gna_api::inference_api::Gna2AccelerationMode::Software => Duration::from_millis(25),
+        crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::Hardware => Duration::from_millis(5),
+        crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::Auto => Duration::from_millis(10),
+        crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::Software => Duration::from_millis(25),
     }
 }
 
 fn instrumentation_results_for_mode(
-    mode: crate::gna_api::inference_api::Gna2AccelerationMode,
-    points: &[crate::gna_api::instrumentation_api::Gna2InstrumentationPoint],
+    mode: crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode,
+    points: &[crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint],
 ) -> Vec<u64> {
     let (total, stall) = match mode {
-        crate::gna_api::inference_api::Gna2AccelerationMode::Hardware => (800u64, 80u64),
-        crate::gna_api::inference_api::Gna2AccelerationMode::Auto => (1000u64, 200u64),
-        crate::gna_api::inference_api::Gna2AccelerationMode::Software => (1800u64, 500u64),
+        crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::Hardware => (800u64, 80u64),
+        crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::Auto => (1000u64, 200u64),
+        crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode::Software => (1800u64, 500u64),
     };
 
     points
         .iter()
         .map(|&pt| match pt {
-            crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwTotalCycles => total,
-            crate::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwStallCycles => stall,
+            crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwTotalCycles => total,
+            crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint::HwStallCycles => stall,
             _ => 0u64,
         })
         .collect()

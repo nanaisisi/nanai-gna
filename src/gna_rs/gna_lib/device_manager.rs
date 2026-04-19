@@ -4,11 +4,11 @@
 */
 use std::collections::BTreeMap;
 
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_lib::device::Device;
-use crate::gna_lib::export_device::ExportDevice;
-use crate::gna_lib::hybrid_device::HybridDevice;
-use crate::gna_lib::memory::Memory;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_lib::device::Device;
+use crate::gna_rs::gna_lib::export_device::ExportDevice;
+use crate::gna_rs::gna_lib::hybrid_device::HybridDevice;
+use crate::gna_rs::gna_lib::memory::Memory;
 
 /// Simplified Rust port of the GNA `DeviceManager` helper.
 #[derive(Debug)]
@@ -307,8 +307,8 @@ impl DeviceManager {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::device_api::Gna2DeviceVersion;
-    use crate::gna_api::model_api::Gna2Model;
+    use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+    use crate::gna_rs::gna_api::model_api::Gna2Model;
 
     #[test]
     fn device_manager_enumerate_returns_at_least_one_device() {

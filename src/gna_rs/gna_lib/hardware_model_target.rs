@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hardware_model::HardwareModel;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hardware_model::HardwareModel;
 
 /// Simplified Rust port of the GNA `HardwareModelTarget` helper.
 #[derive(Debug)]
@@ -25,7 +25,10 @@ impl HardwareModelTarget {
         self.hardware_model.layer_count()
     }
 
-    pub fn get_layer(&self, layer_index: usize) -> &crate::gna_lib::hardware_layer::HardwareLayer {
+    pub fn get_layer(
+        &self,
+        layer_index: usize,
+    ) -> &crate::gna_rs::gna_lib::hardware_layer::HardwareLayer {
         self.hardware_model.get_layer(layer_index)
     }
 }
@@ -33,8 +36,8 @@ impl HardwareModelTarget {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn hardware_model_target_builds_hardware_model() {

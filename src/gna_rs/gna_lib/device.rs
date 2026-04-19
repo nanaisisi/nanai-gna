@@ -4,18 +4,18 @@
 */
 use std::collections::BTreeMap;
 
-use crate::common::BaseAddress;
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_api::model_api::Gna2Model;
-use crate::gna_lib::acceleration_detector::AccelerationDetector;
-use crate::gna_lib::active_list::ActiveList;
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::driver_interface::DriverInterface;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::request::{enqueue_request, get_request_state, wait_request};
-use crate::gna_lib::request_builder::RequestBuilder;
-use crate::gna_lib::request_configuration::RequestConfiguration;
-use crate::gna_lib::request_handler::RequestHandler;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::model_api::Gna2Model;
+use crate::gna_rs::gna_lib::acceleration_detector::AccelerationDetector;
+use crate::gna_rs::gna_lib::active_list::ActiveList;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::driver_interface::DriverInterface;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::request::{enqueue_request, get_request_state, wait_request};
+use crate::gna_rs::gna_lib::request_builder::RequestBuilder;
+use crate::gna_rs::gna_lib::request_configuration::RequestConfiguration;
+use crate::gna_rs::gna_lib::request_handler::RequestHandler;
 
 /// Simplified Rust port of the GNA `Device` helper.
 #[derive(Debug)]
@@ -110,7 +110,7 @@ impl Device {
     pub fn enforce_acceleration(
         &mut self,
         config_id: u32,
-        acceleration_mode: crate::gna_api::inference_api::Gna2AccelerationMode,
+        acceleration_mode: crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode,
     ) -> bool {
         if let Some(config) = self.request_builder.get_configuration_mut(config_id) {
             config.set_acceleration_mode(acceleration_mode);
@@ -173,10 +173,10 @@ impl Device {
 #[cfg(test)]
 mod tests {
     use super::Device;
-    use crate::common::BaseAddress;
-    use crate::gna_api::device_api::Gna2DeviceVersion;
-    use crate::gna_api::inference_api::Gna2AccelerationMode;
-    use crate::gna_api::model_api::Gna2Model;
+    use crate::gna_rs::common::BaseAddress;
+    use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+    use crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode;
+    use crate::gna_rs::gna_api::model_api::Gna2Model;
 
     #[test]
     fn device_loads_and_releases_model() {

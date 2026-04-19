@@ -4,10 +4,8 @@
 */
 // Auto-generated Rust stub for original: gna/src/gna-lib/kernels/affine_sse4-sat.cpp
 
-
 #[allow(dead_code)]
-
-use crate::gna_lib::kernels::KernelArguments;
+use crate::gna_rs::gna_lib::kernels::KernelArguments;
 
 /// Lightweight scalar fallback for the SSE4 affine kernel.
 /// Reads `width` elements of i16 from `input` and writes them to `output`.
@@ -18,7 +16,9 @@ pub fn affine_sse4_sat() {
 
 /// Process with arguments (safe best-effort scalar implementation)
 pub fn affine_sse4_process(args: &KernelArguments) {
-    if args.input.is_null() || args.output.is_null() { return; }
+    if args.input.is_null() || args.output.is_null() {
+        return;
+    }
     let w = args.width;
     unsafe {
         let in_ptr = args.input.get::<i16>();

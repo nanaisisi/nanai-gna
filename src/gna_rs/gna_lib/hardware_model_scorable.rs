@@ -4,19 +4,19 @@
 */
 
 /// Simplified Rust port of the GNA `HardwareModelScorable` helper.
-use crate::common::BaseAddress;
-use crate::gna_api::model_api::Gna2Model;
-use crate::gna_api::types::OperationType;
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::driver_interface::DriverInterface;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hardware_model::HardwareModel;
-use crate::gna_lib::hardware_request::{GnaOperationMode, HardwareRequest};
-use crate::gna_lib::iscorable::IScorable;
-use crate::gna_lib::memory::Memory;
-use crate::gna_lib::memory_container::MemoryContainer;
-use crate::gna_lib::request_configuration::RequestConfiguration;
-use crate::gna_lib::sub_model::SubModel;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::model_api::Gna2Model;
+use crate::gna_rs::gna_api::types::OperationType;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::driver_interface::DriverInterface;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hardware_model::HardwareModel;
+use crate::gna_rs::gna_lib::hardware_request::{GnaOperationMode, HardwareRequest};
+use crate::gna_rs::gna_lib::iscorable::IScorable;
+use crate::gna_rs::gna_lib::memory::Memory;
+use crate::gna_rs::gna_lib::memory_container::MemoryContainer;
+use crate::gna_rs::gna_lib::request_configuration::RequestConfiguration;
+use crate::gna_rs::gna_lib::sub_model::SubModel;
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -129,8 +129,8 @@ impl IScorable for HardwareModelScorable {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn hardware_model_scorable_new_builds_underlying_hardware_model() {

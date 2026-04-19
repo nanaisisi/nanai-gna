@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::model_api::Gna2Operation;
-use crate::gna_api::types::Gna2TensorMode;
-use crate::gna_lib::model_wrapper::ModelWrapper;
+use crate::gna_rs::gna_api::model_api::Gna2Operation;
+use crate::gna_rs::gna_api::types::Gna2TensorMode;
+use crate::gna_rs::gna_lib::model_wrapper::ModelWrapper;
 
 /// Simplified Rust port of the GNA ExternalBuffer helper.
 #[allow(dead_code)]
@@ -23,9 +23,9 @@ impl ExternalBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::model_api::Gna2Operation;
-    use crate::gna_api::model_api::Gna2Tensor;
-    use crate::gna_api::types::{Gna2DataType, Gna2TensorMode, OperationType};
+    use crate::gna_rs::gna_api::model_api::Gna2Operation;
+    use crate::gna_rs::gna_api::model_api::Gna2Tensor;
+    use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode, OperationType};
 
     #[test]
     fn external_buffer_is_supported_when_operand_mode_external_buffer() {

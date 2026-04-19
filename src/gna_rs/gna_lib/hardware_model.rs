@@ -2,13 +2,13 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::common::BaseAddress;
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_api::types::OperationType;
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hardware_layer::HardwareLayer;
-use crate::gna_lib::layer_descriptor::LayerDescriptor;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::types::OperationType;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hardware_layer::HardwareLayer;
+use crate::gna_rs::gna_lib::layer_descriptor::LayerDescriptor;
 
 /// Simplified Rust port of the GNA `HardwareModel` helper.
 #[derive(Debug)]
@@ -119,8 +119,8 @@ impl HardwareModel {
 #[cfg(test)]
 mod tests {
     use super::{HardwareCapabilities, HardwareModel};
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn hardware_model_builds_layers_for_compiled_model() {
@@ -134,7 +134,7 @@ mod tests {
             parameters: vec![],
         });
 
-        let compiled = crate::gna_lib::compiled_model::CompiledModel::new(model);
+        let compiled = crate::gna_rs::gna_lib::compiled_model::CompiledModel::new(model);
         let hardware_model = HardwareModel::new(&compiled, HardwareCapabilities);
 
         assert_eq!(hardware_model.layer_count(), 2);
@@ -147,10 +147,10 @@ mod tests {
     #[test]
     fn hardware_model_gets_buffer_offset_from_base_address() {
         let model = Gna2Model::new();
-        let compiled = crate::gna_lib::compiled_model::CompiledModel::new(model);
+        let compiled = crate::gna_rs::gna_lib::compiled_model::CompiledModel::new(model);
         let hardware_model = HardwareModel::new(&compiled, HardwareCapabilities);
 
-        let offset = hardware_model.get_buffer_offset(crate::common::BaseAddress::null());
+        let offset = hardware_model.get_buffer_offset(crate::gna_rs::common::BaseAddress::null());
         assert_eq!(offset, 0);
     }
 }

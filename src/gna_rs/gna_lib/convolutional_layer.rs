@@ -2,8 +2,8 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_lib::activation_function::ActivationFunction;
-use crate::gna_lib::convolutional_functions::ConvolutionalFunctions;
+use crate::gna_rs::gna_lib::activation_function::ActivationFunction;
+use crate::gna_rs::gna_lib::convolutional_functions::ConvolutionalFunctions;
 
 /// Minimal Rust port of the GNA `ConvolutionalLayer` helper.
 ///
@@ -47,8 +47,8 @@ impl ConvolutionalLayer {
 #[cfg(test)]
 mod tests {
     use super::ConvolutionalLayer;
-    use crate::gna_lib::activation_function::ActivationFunction;
-    use crate::gna_lib::kernels::pwl::PwlSegment;
+    use crate::gna_rs::gna_lib::activation_function::ActivationFunction;
+    use crate::gna_rs::gna_lib::kernels::pwl::PwlSegment;
 
     #[test]
     fn convolutional_layer_run_applies_conv_bias_and_activation() {

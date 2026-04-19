@@ -12,24 +12,24 @@ Rust 版 GNA 移植プロジェクトです。
 cargo build --workspace
 ```
 
-### 2. `gna-rs` のサンプルを実行
+### 2. `examples` のサンプルを実行
 
 - リクエスト状態確認サンプル:
 
 ```bash
-cargo run --example request_state --manifest-path gna-rs/Cargo.toml
+cargo run --example request_state
 ```
 
 - 使用率計算サンプル:
 
 ```bash
-cargo run --example usage_report --manifest-path gna-rs/Cargo.toml -- --points hw_total,hw_stall --results 1000,250
+cargo run --example usage_report -- --points hw_total,hw_stall --results 1000,250
 ```
 
 ### 3. テスト実行
 
 ```bash
-cargo test -p gna-rs
+cargo test -p nanai-gna
 ```
 
 > 注: Intel® GNA ハードウェアを使う場合、対応するドライバーを事前にインストールしてください。

@@ -2,20 +2,20 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_api::inference_api::Gna2AccelerationMode;
-use crate::gna_api::model_api::Gna2Model;
-use crate::gna_lib::acceleration_detector::AccelerationDetector;
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::driver_interface::DriverInterface;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hardware_model_scorable::HardwareModelScorable;
-use crate::gna_lib::iscorable::IScorable;
-use crate::gna_lib::memory::Memory;
-use crate::gna_lib::memory_container::MemoryContainer;
-use crate::gna_lib::request_configuration::RequestConfiguration;
-use crate::gna_lib::software_model::SoftwareModel;
-use crate::gna_lib::sub_model::{SubModel, SubModelType};
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode;
+use crate::gna_rs::gna_api::model_api::Gna2Model;
+use crate::gna_rs::gna_lib::acceleration_detector::AccelerationDetector;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::driver_interface::DriverInterface;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hardware_model_scorable::HardwareModelScorable;
+use crate::gna_rs::gna_lib::iscorable::IScorable;
+use crate::gna_rs::gna_lib::memory::Memory;
+use crate::gna_rs::gna_lib::memory_container::MemoryContainer;
+use crate::gna_rs::gna_lib::request_configuration::RequestConfiguration;
+use crate::gna_rs::gna_lib::software_model::SoftwareModel;
+use crate::gna_rs::gna_lib::sub_model::{SubModel, SubModelType};
 use std::collections::HashMap;
 
 /// Simplified Rust port of the GNA `HybridModel` helper.
@@ -143,9 +143,9 @@ impl IScorable for HybridModel {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
-    use crate::gna_lib::request_configuration::RequestConfiguration;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
+    use crate::gna_rs::gna_lib::request_configuration::RequestConfiguration;
 
     #[test]
     fn hybrid_model_new_initializes_without_panic() {

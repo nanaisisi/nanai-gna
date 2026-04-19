@@ -1,4 +1,4 @@
-use crate::gna_lib::parameter_limits::AlignLimits;
+use crate::gna_rs::gna_lib::parameter_limits::AlignLimits;
 /**
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later

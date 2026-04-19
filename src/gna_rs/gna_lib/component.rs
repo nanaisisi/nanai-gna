@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_lib::parameter_limits::{ComponentLimits, RangeLimits, ShapeLimits};
-use crate::gna_lib::shape::Shape;
-use crate::gna_lib::validator::Validator;
+use crate::gna_rs::gna_lib::parameter_limits::{ComponentLimits, RangeLimits, ShapeLimits};
+use crate::gna_rs::gna_lib::shape::Shape;
+use crate::gna_rs::gna_lib::validator::Validator;
 
 /// Simplified Rust port of the GNA Component helper.
 #[derive(Debug, Clone)]
@@ -136,10 +136,10 @@ mod tests {
         let shape = Shape::with_dims(vec![2, 3]);
         let component = Component::new(shape, 0, true);
         let limits = ComponentLimits::new(
-            crate::gna_lib::parameter_limits::OrderLimits::new(0, 0),
+            crate::gna_rs::gna_lib::parameter_limits::OrderLimits::new(0, 0),
             vec![RangeLimits {
-                min: crate::gna_lib::parameter_limits::ValueLimits::new(1, 0),
-                max: crate::gna_lib::parameter_limits::ValueLimits::new(5, 0),
+                min: crate::gna_rs::gna_lib::parameter_limits::ValueLimits::new(1, 0),
+                max: crate::gna_rs::gna_lib::parameter_limits::ValueLimits::new(5, 0),
             }],
         );
         assert!(!component.validate_with_limits(&limits, true));
@@ -150,15 +150,15 @@ mod tests {
         let shape = Shape::with_dims(vec![2, 3]);
         let component = Component::new(shape, 0, true);
         let limits = ComponentLimits::new(
-            crate::gna_lib::parameter_limits::OrderLimits::new(0, 0),
+            crate::gna_rs::gna_lib::parameter_limits::OrderLimits::new(0, 0),
             vec![
                 RangeLimits {
-                    min: crate::gna_lib::parameter_limits::ValueLimits::new(1, 0),
-                    max: crate::gna_lib::parameter_limits::ValueLimits::new(5, 0),
+                    min: crate::gna_rs::gna_lib::parameter_limits::ValueLimits::new(1, 0),
+                    max: crate::gna_rs::gna_lib::parameter_limits::ValueLimits::new(5, 0),
                 },
                 RangeLimits {
-                    min: crate::gna_lib::parameter_limits::ValueLimits::new(1, 0),
-                    max: crate::gna_lib::parameter_limits::ValueLimits::new(5, 0),
+                    min: crate::gna_rs::gna_lib::parameter_limits::ValueLimits::new(1, 0),
+                    max: crate::gna_rs::gna_lib::parameter_limits::ValueLimits::new(5, 0),
                 },
             ],
         );

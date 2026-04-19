@@ -1,11 +1,11 @@
-use crate::gna_lib::request;
-use crate::gna_lib::request::Request;
+use crate::gna_rs::gna_lib::request;
+use crate::gna_rs::gna_lib::request::Request;
 /**
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_lib::request::{enqueue_request, get_request_state, wait_request};
-use crate::gna_lib::thread_pool::ThreadPool;
+use crate::gna_rs::gna_lib::request::{enqueue_request, get_request_state, wait_request};
+use crate::gna_rs::gna_lib::thread_pool::ThreadPool;
 
 /// Simplified Rust port of the GNA `RequestHandler` helper.
 #[derive(Debug)]
@@ -52,10 +52,10 @@ impl RequestHandler {
 #[cfg(test)]
 mod tests {
     use super::RequestHandler;
-    use crate::gna_api::inference_api::Gna2AccelerationMode;
-    use crate::gna_api::instrumentation_api::Gna2InstrumentationPoint;
-    use crate::gna_lib::request::get_instrumentation_results;
-    use crate::gna_lib::{Request, RequestConfiguration};
+    use crate::gna_rs::gna_api::inference_api::Gna2AccelerationMode;
+    use crate::gna_rs::gna_api::instrumentation_api::Gna2InstrumentationPoint;
+    use crate::gna_rs::gna_lib::request::get_instrumentation_results;
+    use crate::gna_rs::gna_lib::{Request, RequestConfiguration};
 
     #[test]
     fn request_handler_can_enqueue_and_wait() {

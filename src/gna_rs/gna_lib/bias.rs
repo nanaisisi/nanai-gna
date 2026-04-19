@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::common::address::BaseAddress;
-use crate::gna_api::types::{Gna2BiasMode, Gna2TensorMode};
-use crate::gna_lib::data_mode::DataMode;
+use crate::gna_rs::common::address::BaseAddress;
+use crate::gna_rs::gna_api::types::{Gna2BiasMode, Gna2TensorMode};
+use crate::gna_rs::gna_lib::data_mode::DataMode;
 
 /// Minimal port of GNA bias tensor handling.
 #[derive(Debug, Clone)]
@@ -50,7 +50,7 @@ impl Bias {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::types::Gna2DataType;
+    use crate::gna_rs::gna_api::types::Gna2DataType;
 
     #[test]
     fn bias_apply_copies_buffer_to_target() {

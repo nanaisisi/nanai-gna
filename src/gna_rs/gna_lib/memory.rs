@@ -3,8 +3,8 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Memory management skeleton (Memory / MemoryContainer)
-use crate::common::BaseAddress;
-use crate::gna_lib::driver_interface::DriverInterface;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_lib::driver_interface::DriverInterface;
 
 #[derive(Debug, Default)]
 pub struct Memory {

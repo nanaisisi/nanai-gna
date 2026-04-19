@@ -4,7 +4,7 @@
 */
 use std::collections::HashMap;
 
-use crate::gna_api::types::OperationType;
+use crate::gna_rs::gna_api::types::OperationType;
 
 /// Simplified Rust port of the GNA `LayerDescriptor` helper.
 #[derive(Debug, Clone)]
@@ -77,7 +77,7 @@ impl LayerDescriptor {
 #[cfg(test)]
 mod tests {
     use super::LayerDescriptor;
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn layer_descriptor_can_store_and_retrieve_parameters() {

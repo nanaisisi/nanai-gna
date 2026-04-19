@@ -2,12 +2,12 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::common::BaseAddress;
-use crate::gna_api::gna2_suecreek_header::SueCreekHeader;
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hardware_model::HardwareModel;
-use crate::gna_lib::layer_descriptor::LayerDescriptor;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::gna2_suecreek_header::SueCreekHeader;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hardware_model::HardwareModel;
+use crate::gna_rs::gna_lib::layer_descriptor::LayerDescriptor;
 
 /// Simplified Rust port of the GNA `HardwareModelSue1` helper.
 #[derive(Debug)]
@@ -67,8 +67,8 @@ impl HardwareModelSue1 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn hardware_model_sue1_new_allocates_export_memory() {

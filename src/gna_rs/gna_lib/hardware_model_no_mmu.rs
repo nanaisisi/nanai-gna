@@ -2,12 +2,12 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::common::BaseAddress;
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_lib::compiled_model::CompiledModel;
-use crate::gna_lib::hardware_capabilities::HardwareCapabilities;
-use crate::gna_lib::hardware_model::HardwareModel;
-use crate::gna_lib::layer_descriptor::LayerDescriptor;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_lib::compiled_model::CompiledModel;
+use crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities;
+use crate::gna_rs::gna_lib::hardware_model::HardwareModel;
+use crate::gna_rs::gna_lib::layer_descriptor::LayerDescriptor;
 /// Memory container placeholder used by NoMMU buffer validation.
 #[derive(Debug, Clone)]
 pub struct MemoryContainer;
@@ -136,8 +136,8 @@ impl HardwareModelNoMMU {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn hardware_model_no_mmu_new_allocates_export_memory() {

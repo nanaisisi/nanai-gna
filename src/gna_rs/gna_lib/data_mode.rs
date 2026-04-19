@@ -2,7 +2,7 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::types::{Gna2DataType, Gna2TensorMode};
+use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode};
 
 /// Simplified Rust port of the GNA `DataMode` helper.
 ///
@@ -86,7 +86,7 @@ impl Default for DataMode {
 #[cfg(test)]
 mod tests {
     use super::DataMode;
-    use crate::gna_api::types::{Gna2DataType, Gna2TensorMode};
+    use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode};
 
     #[test]
     fn data_mode_default_is_disabled_none() {

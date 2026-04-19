@@ -30,6 +30,17 @@ pub mod instrumentation;
 pub mod backend;
 pub mod gna_rs;
 
+// Compatibility aliases for modules that expect the old crate root layout.
+pub mod common {
+    pub use crate::gna_rs::common::*;
+}
+pub mod gna_api {
+    pub use crate::gna_rs::gna_api::*;
+}
+pub mod gna_lib {
+    pub use crate::gna_rs::gna_lib::*;
+}
+
 #[cfg(test)]
 mod tests {
     use super::raw;

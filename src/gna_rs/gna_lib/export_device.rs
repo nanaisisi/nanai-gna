@@ -2,9 +2,9 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_api::model_api::Gna2Model;
-use crate::gna_lib::device::Device;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::model_api::Gna2Model;
+use crate::gna_rs::gna_lib::device::Device;
 
 /// Minimal Rust port of the GNA `ExportDevice` helper.
 #[derive(Debug)]
@@ -45,9 +45,9 @@ impl ExportDevice {
 #[cfg(test)]
 mod tests {
     use super::ExportDevice;
-    use crate::gna_api::device_api::Gna2DeviceVersion;
-    use crate::gna_api::model_api::{Gna2Model, Gna2Operation};
-    use crate::gna_api::types::OperationType;
+    use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+    use crate::gna_rs::gna_api::model_api::{Gna2Model, Gna2Operation};
+    use crate::gna_rs::gna_api::types::OperationType;
 
     #[test]
     fn export_device_loads_and_exports_model() {

@@ -4,13 +4,13 @@
 */
 
 /// Simplified Rust port of the GNA `HardwareRequest` helper.
-use crate::gna_api::types::{
+use crate::gna_rs::gna_api::types::{
     INPUT_OPERAND_INDEX, OUTPUT_OPERAND_INDEX, OperationType, SCRATCHPAD_OPERAND_INDEX,
 };
-use crate::gna_lib::hardware_layer::HardwareLayer;
-use crate::gna_lib::hardware_model::HardwareModel;
-use crate::gna_lib::layer_configuration::LayerConfiguration;
-use crate::gna_lib::request_configuration::RequestConfiguration;
+use crate::gna_rs::gna_lib::hardware_layer::HardwareLayer;
+use crate::gna_rs::gna_lib::hardware_model::HardwareModel;
+use crate::gna_rs::gna_lib::layer_configuration::LayerConfiguration;
+use crate::gna_rs::gna_lib::request_configuration::RequestConfiguration;
 use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -245,12 +245,12 @@ impl GnaOperationMode {
 #[cfg(test)]
 mod tests {
     use super::{DriverMemoryObject, GnaOperationMode, HardwareRequest, MemoryPatch};
-    use crate::common::BaseAddress;
-    use crate::gna_api::types::{INPUT_OPERAND_INDEX, OUTPUT_OPERAND_INDEX, OperationType};
-    use crate::gna_lib::hardware_layer::HardwareLayer;
-    use crate::gna_lib::hardware_model::HardwareModel;
-    use crate::gna_lib::layer_configuration::LayerConfiguration;
-    use crate::gna_lib::request_configuration::RequestConfiguration;
+    use crate::gna_rs::common::BaseAddress;
+    use crate::gna_rs::gna_api::types::{INPUT_OPERAND_INDEX, OUTPUT_OPERAND_INDEX, OperationType};
+    use crate::gna_rs::gna_lib::hardware_layer::HardwareLayer;
+    use crate::gna_rs::gna_lib::hardware_model::HardwareModel;
+    use crate::gna_rs::gna_lib::layer_configuration::LayerConfiguration;
+    use crate::gna_rs::gna_lib::request_configuration::RequestConfiguration;
 
     #[test]
     fn hardware_request_initializes_with_config_id_and_defaults() {
@@ -271,12 +271,12 @@ mod tests {
 
     #[test]
     fn hardware_request_update_sets_offsets_and_ready_state() {
-        let mut model = crate::gna_api::model_api::Gna2Model::new();
-        model.add_operation(crate::gna_api::model_api::Gna2Operation::default());
-        let compiled = crate::gna_lib::compiled_model::CompiledModel::new(model);
+        let mut model = crate::gna_rs::gna_api::model_api::Gna2Model::new();
+        model.add_operation(crate::gna_rs::gna_api::model_api::Gna2Operation::default());
+        let compiled = crate::gna_rs::gna_lib::compiled_model::CompiledModel::new(model);
         let hardware_model = HardwareModel::new(
             &compiled,
-            crate::gna_lib::hardware_capabilities::HardwareCapabilities,
+            crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities,
         );
 
         let mut req = HardwareRequest::new(RequestConfiguration::new());
@@ -291,12 +291,12 @@ mod tests {
 
     #[test]
     fn hardware_request_update_for_gmm_sets_gmm_offset() {
-        let mut model = crate::gna_api::model_api::Gna2Model::new();
-        model.add_operation(crate::gna_api::model_api::Gna2Operation::default());
-        let compiled = crate::gna_lib::compiled_model::CompiledModel::new(model);
+        let mut model = crate::gna_rs::gna_api::model_api::Gna2Model::new();
+        model.add_operation(crate::gna_rs::gna_api::model_api::Gna2Operation::default());
+        let compiled = crate::gna_rs::gna_lib::compiled_model::CompiledModel::new(model);
         let hardware_model = HardwareModel::new(
             &compiled,
-            crate::gna_lib::hardware_capabilities::HardwareCapabilities,
+            crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities,
         );
 
         let mut req = HardwareRequest::new(RequestConfiguration::new());
@@ -324,12 +324,12 @@ mod tests {
 
     #[test]
     fn hardware_request_invalidate_with_model_generates_layer_patches() {
-        let mut model = crate::gna_api::model_api::Gna2Model::new();
-        model.add_operation(crate::gna_api::model_api::Gna2Operation::default());
-        let compiled = crate::gna_lib::compiled_model::CompiledModel::new(model);
+        let mut model = crate::gna_rs::gna_api::model_api::Gna2Model::new();
+        model.add_operation(crate::gna_rs::gna_api::model_api::Gna2Operation::default());
+        let compiled = crate::gna_rs::gna_lib::compiled_model::CompiledModel::new(model);
         let hardware_model = HardwareModel::new(
             &compiled,
-            crate::gna_lib::hardware_capabilities::HardwareCapabilities,
+            crate::gna_rs::gna_lib::hardware_capabilities::HardwareCapabilities,
         );
 
         let mut config = RequestConfiguration::new();

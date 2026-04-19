@@ -2,10 +2,10 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::device_api::Gna2DeviceVersion;
-use crate::gna_api::model_api::Gna2Operation;
-use crate::gna_api::types::OperationType;
-use crate::gna_lib::data_mode::DataMode;
+use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+use crate::gna_rs::gna_api::model_api::Gna2Operation;
+use crate::gna_rs::gna_api::types::OperationType;
+use crate::gna_rs::gna_lib::data_mode::DataMode;
 
 /// Simplified Rust port of GNA `DeviceLayerSupport`.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -50,8 +50,8 @@ impl DeviceLayerSupport {
         }
 
         // Disallow disabled output or disabled inputs for meaningful operations.
-        if config.input.mode == crate::gna_api::types::Gna2TensorMode::Disabled
-            || config.output.mode == crate::gna_api::types::Gna2TensorMode::Disabled
+        if config.input.mode == crate::gna_rs::gna_api::types::Gna2TensorMode::Disabled
+            || config.output.mode == crate::gna_rs::gna_api::types::Gna2TensorMode::Disabled
         {
             return false;
         }
@@ -59,14 +59,14 @@ impl DeviceLayerSupport {
         match operation {
             OperationType::Copy => true,
             OperationType::FullyConnectedAffine | OperationType::ElementWiseAffine => {
-                config.weight.mode != crate::gna_api::types::Gna2TensorMode::Disabled
-                    && config.bias.mode != crate::gna_api::types::Gna2TensorMode::Disabled
+                config.weight.mode != crate::gna_rs::gna_api::types::Gna2TensorMode::Disabled
+                    && config.bias.mode != crate::gna_rs::gna_api::types::Gna2TensorMode::Disabled
             }
             OperationType::Convolution => {
-                config.weight.mode != crate::gna_api::types::Gna2TensorMode::Disabled
+                config.weight.mode != crate::gna_rs::gna_api::types::Gna2TensorMode::Disabled
             }
             OperationType::Gmm => {
-                config.weight.mode != crate::gna_api::types::Gna2TensorMode::Disabled
+                config.weight.mode != crate::gna_rs::gna_api::types::Gna2TensorMode::Disabled
             }
             OperationType::Recurrent => true,
             OperationType::Transposition => true,
@@ -86,10 +86,10 @@ impl DeviceLayerSupport {
 #[cfg(test)]
 mod tests {
     use super::{DataConfig, DeviceLayerSupport};
-    use crate::gna_api::device_api::Gna2DeviceVersion;
-    use crate::gna_api::model_api::Gna2Operation;
-    use crate::gna_api::types::{Gna2DataType, Gna2TensorMode};
-    use crate::gna_lib::data_mode::DataMode;
+    use crate::gna_rs::gna_api::device_api::Gna2DeviceVersion;
+    use crate::gna_rs::gna_api::model_api::Gna2Operation;
+    use crate::gna_rs::gna_api::types::{Gna2DataType, Gna2TensorMode};
+    use crate::gna_rs::gna_lib::data_mode::DataMode;
 
     #[test]
     fn device_layer_support_allows_copy_with_valid_config() {

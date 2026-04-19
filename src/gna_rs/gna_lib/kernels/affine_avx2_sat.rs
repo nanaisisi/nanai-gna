@@ -4,10 +4,8 @@
 */
 // Auto-generated Rust stub for original: gna/src/gna-lib/kernels/affine_avx2-sat.cpp
 
-
 #[allow(dead_code)]
-
-use crate::gna_lib::kernels::KernelArguments;
+use crate::gna_rs::gna_lib::kernels::KernelArguments;
 
 /// Lightweight scalar fallback for the AVX2 affine kernel.
 pub fn affine_avx2_sat() {
@@ -16,7 +14,9 @@ pub fn affine_avx2_sat() {
 
 /// Process with arguments (safe best-effort scalar implementation)
 pub fn affine_avx2_process(args: &KernelArguments) {
-    if args.input.is_null() || args.output.is_null() { return; }
+    if args.input.is_null() || args.output.is_null() {
+        return;
+    }
     let w = args.width;
     unsafe {
         let in_ptr = args.input.get::<i16>();

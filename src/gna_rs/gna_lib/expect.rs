@@ -2,8 +2,8 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_api::common_api::Gna2Status;
-use crate::gna_lib::parameter_limits::{AlignLimits, RangeLimits, SetLimits};
+use crate::gna_rs::gna_api::common_api::Gna2Status;
+use crate::gna_rs::gna_lib::parameter_limits::{AlignLimits, RangeLimits, SetLimits};
 
 const GNA2_STATUS_NULL_ARGUMENT_NOT_ALLOWED: Gna2Status = -6;
 const GNA2_STATUS_NOT_MULTIPLE_OF: Gna2Status = -14;

@@ -2,7 +2,7 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::gna_lib::layout::Layout;
+use crate::gna_rs::gna_lib::layout::Layout;
 
 /// Simplified Rust port of the GNA Shape helper.
 ///

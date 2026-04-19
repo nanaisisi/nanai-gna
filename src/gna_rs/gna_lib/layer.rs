@@ -3,13 +3,13 @@
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// Simplified Rust port of the GNA `Layer` helper.
-use crate::common::BaseAddress;
-use crate::gna_lib::buffer_map::BufferMap;
-use crate::gna_lib::layer_configuration::LayerConfiguration;
-use crate::gna_lib::layer_input::LayerInput;
-use crate::gna_lib::layer_output::LayerOutput;
-use crate::gna_lib::transform::TransformOperation;
-use crate::gna_lib::{BaseTransform, TransformMap};
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_lib::buffer_map::BufferMap;
+use crate::gna_rs::gna_lib::layer_configuration::LayerConfiguration;
+use crate::gna_rs::gna_lib::layer_input::LayerInput;
+use crate::gna_rs::gna_lib::layer_output::LayerOutput;
+use crate::gna_rs::gna_lib::transform::TransformOperation;
+use crate::gna_rs::gna_lib::{BaseTransform, TransformMap};
 
 #[derive(Debug, Clone)]
 pub struct Layer {
@@ -121,7 +121,7 @@ impl Layer {
         &self,
         operation: TransformOperation,
         operand_index: u32,
-    ) -> Option<&crate::gna_lib::tensor::Tensor> {
+    ) -> Option<&crate::gna_rs::gna_lib::tensor::Tensor> {
         self.transforms
             .get_optional(operation)
             .and_then(|transform| transform.get_operand(operand_index))
@@ -136,7 +136,7 @@ impl Layer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::BaseAddress;
+    use crate::gna_rs::common::BaseAddress;
 
     #[test]
     fn layer_can_store_and_retrieve_buffers() {

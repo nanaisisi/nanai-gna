@@ -1,13 +1,12 @@
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_api::types::{INPUT_OPERAND_INDEX, OUTPUT_OPERAND_INDEX};
 /**
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
 /// `BufferMap` lives in `gna-lib` in the original codebase. This mirrors the
 /// original small API: mapping from operand (u32) to `BaseAddress`.
-
 use std::collections::BTreeMap;
-use crate::common::BaseAddress;
-use crate::gna_api::types::{INPUT_OPERAND_INDEX, OUTPUT_OPERAND_INDEX};
 
 /// Simple `BufferMap` compatible with original structure.
 #[derive(Debug, Default, Clone)]
@@ -17,13 +16,21 @@ pub struct BufferMap {
 
 impl BufferMap {
     /// Default constructor
-    pub fn new() -> Self { Self { inner: BTreeMap::new() } }
+    pub fn new() -> Self {
+        Self {
+            inner: BTreeMap::new(),
+        }
+    }
 
     /// Construct with input / output addresses pre-populated.
     pub fn with_io(input: BaseAddress, output: BaseAddress) -> Self {
         let mut bm = Self::new();
-        if !input.is_null() { bm.emplace(INPUT_OPERAND_INDEX, input); }
-        if !output.is_null() { bm.emplace(OUTPUT_OPERAND_INDEX, output); }
+        if !input.is_null() {
+            bm.emplace(INPUT_OPERAND_INDEX, input);
+        }
+        if !output.is_null() {
+            bm.emplace(OUTPUT_OPERAND_INDEX, output);
+        }
         bm
     }
 
@@ -36,37 +43,62 @@ impl BufferMap {
     pub fn emplace(&mut self, operand: u32, addr: BaseAddress) -> bool {
         use std::collections::btree_map::Entry;
         match self.inner.entry(operand) {
-            Entry::Vacant(e) => { e.insert(addr); true }
+            Entry::Vacant(e) => {
+                e.insert(addr);
+                true
+            }
             Entry::Occupied(_) => false,
         }
     }
 
     /// Find an entry
-    pub fn find(&self, operand: u32) -> Option<(&u32, &BaseAddress)> { self.inner.get_key_value(&operand) }
+    pub fn find(&self, operand: u32) -> Option<(&u32, &BaseAddress)> {
+        self.inner.get_key_value(&operand)
+    }
 
     /// Count occurrences (0 or 1)
-    pub fn count(&self, operand: u32) -> usize { if self.inner.contains_key(&operand) { 1 } else { 0 } }
+    pub fn count(&self, operand: u32) -> usize {
+        if self.inner.contains_key(&operand) {
+            1
+        } else {
+            0
+        }
+    }
 
     /// Remove mapping
-    pub fn erase(&mut self, operand: &u32) -> Option<BaseAddress> { self.inner.remove(operand) }
+    pub fn erase(&mut self, operand: &u32) -> Option<BaseAddress> {
+        self.inner.remove(operand)
+    }
 
     /// Get a copy of value if present
-    pub fn get(&self, operand: u32) -> Option<BaseAddress> { self.inner.get(&operand).cloned() }
+    pub fn get(&self, operand: u32) -> Option<BaseAddress> {
+        self.inner.get(&operand).cloned()
+    }
 
     /// Iterators
-    pub fn iter(&self) -> impl Iterator<Item=(&u32, &BaseAddress)> { self.inner.iter() }
-    pub fn keys(&self) -> impl Iterator<Item=&u32> { self.inner.keys() }
+    pub fn iter(&self) -> impl Iterator<Item = (&u32, &BaseAddress)> {
+        self.inner.iter()
+    }
+    pub fn keys(&self) -> impl Iterator<Item = &u32> {
+        self.inner.keys()
+    }
 
     /// Number of elements
-    pub fn len(&self) -> usize { self.inner.len() }
-    pub fn is_empty(&self) -> bool { self.inner.is_empty() }
+    pub fn len(&self) -> usize {
+        self.inner.len()
+    }
+    pub fn is_empty(&self) -> bool {
+        self.inner.is_empty()
+    }
 }
 
 use std::ops::{Index, IndexMut};
 impl Index<u32> for BufferMap {
     type Output = BaseAddress;
     fn index(&self, index: u32) -> &Self::Output {
-        self.inner.get(&index).expect("BufferMap index out of range")
+        self.inner
+            .get(&index)
+            .expect("BufferMap index out of range")
     }
 }
 impl IndexMut<u32> for BufferMap {
@@ -100,6 +132,9 @@ mod tests {
     fn index_assignment() {
         let mut bm = BufferMap::new();
         bm[5u32] = BaseAddress::from_ptr(0x300usize as *mut u8);
-        assert_eq!(bm.get(5), Some(BaseAddress::from_ptr(0x300usize as *mut u8)));
+        assert_eq!(
+            bm.get(5),
+            Some(BaseAddress::from_ptr(0x300usize as *mut u8))
+        );
     }
 }

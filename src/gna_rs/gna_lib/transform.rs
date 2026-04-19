@@ -2,10 +2,10 @@
  @copyright Copyright (C) 2020-2022 Intel Corporation
  SPDX-License-Identifier: LGPL-2.1-or-later
 */
-use crate::common::BaseAddress;
-use crate::gna_lib::active_list::ActiveList;
-use crate::gna_lib::buffer_map::BufferMap;
-use crate::gna_lib::tensor::Tensor;
+use crate::gna_rs::common::BaseAddress;
+use crate::gna_rs::gna_lib::active_list::ActiveList;
+use crate::gna_rs::gna_lib::buffer_map::BufferMap;
+use crate::gna_rs::gna_lib::tensor::Tensor;
 
 /// Skeleton for Transform base types.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -105,20 +105,20 @@ impl BaseTransform {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::BaseAddress;
-    use crate::gna_api::types::Gna2DataType;
-    use crate::gna_lib::data_mode::DataMode;
+    use crate::gna_rs::common::BaseAddress;
+    use crate::gna_rs::gna_api::types::Gna2DataType;
+    use crate::gna_rs::gna_lib::data_mode::DataMode;
 
     #[test]
     fn base_transform_can_store_input_and_output() {
         let input = Tensor::new(
-            crate::gna_lib::shape::Shape::with_dims(vec![1, 2]),
+            crate::gna_rs::gna_lib::shape::Shape::with_dims(vec![1, 2]),
             DataMode::new(Gna2DataType::Int16),
             BaseAddress::null(),
             0,
         );
         let output = Tensor::new(
-            crate::gna_lib::shape::Shape::with_dims(vec![1, 1]),
+            crate::gna_rs::gna_lib::shape::Shape::with_dims(vec![1, 1]),
             DataMode::new(Gna2DataType::Int16),
             BaseAddress::null(),
             1,
@@ -135,13 +135,13 @@ mod tests {
     #[test]
     fn base_transform_can_set_output_buffer() {
         let input = Tensor::new(
-            crate::gna_lib::shape::Shape::with_dims(vec![1]),
+            crate::gna_rs::gna_lib::shape::Shape::with_dims(vec![1]),
             DataMode::new(Gna2DataType::Int16),
             BaseAddress::null(),
             0,
         );
         let mut output = Tensor::new(
-            crate::gna_lib::shape::Shape::with_dims(vec![1]),
+            crate::gna_rs::gna_lib::shape::Shape::with_dims(vec![1]),
             DataMode::new(Gna2DataType::Int16),
             BaseAddress::null(),
             1,
