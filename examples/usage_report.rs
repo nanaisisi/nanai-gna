@@ -1,8 +1,7 @@
 use clap::Parser;
-use nanai_gna::instrumentation::{compute_hw_usage, UsageError};
+use nanai_gna::instrumentation::{UsageError, compute_benchmark_hw_usage, compute_hw_usage};
 use nanai_gna::raw::{
-    Gna2InstrumentationPoint,
-    Gna2InstrumentationPoint_Gna2InstrumentationPointDrvCompletion,
+    Gna2InstrumentationPoint, Gna2InstrumentationPoint_Gna2InstrumentationPointDrvCompletion,
     Gna2InstrumentationPoint_Gna2InstrumentationPointDrvDeviceRequestCompleted,
     Gna2InstrumentationPoint_Gna2InstrumentationPointDrvPreprocessing,
     Gna2InstrumentationPoint_Gna2InstrumentationPointDrvProcessing,
@@ -35,6 +34,10 @@ struct Args {
     /// Treat results as timestamps and show per-segment timing share. If false, only usage is shown.
     #[arg(long, default_value_t = true)]
     timeline: bool,
+
+    /// Benchmark total cycles for load-based usage calculation.
+    #[arg(long)]
+    benchmark: Option<u64>,
 }
 
 fn main() {
@@ -54,6 +57,25 @@ fn main() {
             println!("HW usage: Total が 0 のため計算不可");
         }
         Err(UsageError::LengthMismatch) => unreachable!("既に長さを検査済み"),
+        Err(e) => println!("HW usage: エラー: {}", e),
+    }
+
+    if let Some(benchmark_total) = args.benchmark {
+        match compute_benchmark_hw_usage(&args.points, &args.results, benchmark_total) {
+            Ok(usage) => println!(
+                "Benchmark usage: {:.2}% (基準 {} cycles)",
+                usage * 100.0,
+                benchmark_total
+            ),
+            Err(UsageError::BenchmarkZero) => {
+                println!("Benchmark usage: benchmark total cycles は正の値である必要があります");
+            }
+            Err(UsageError::MissingRequiredPoints) => {
+                println!("Benchmark usage: 計算に必要な Total/Stall が不足しています");
+            }
+            Err(UsageError::LengthMismatch) => unreachable!("既に長さを検査済み"),
+            Err(e) => println!("Benchmark usage: エラー: {}", e),
+        }
     }
 
     if args.timeline && args.results.len() >= 2 {
@@ -93,12 +115,30 @@ fn default_results() -> Vec<u64> {
 }
 
 const KNOWN_POINTS: &[(&str, Gna2InstrumentationPoint)] = &[
-    ("hw_total", Gna2InstrumentationPoint_Gna2InstrumentationPointHwTotalCycles),
-    ("hw_stall", Gna2InstrumentationPoint_Gna2InstrumentationPointHwStallCycles),
-    ("lib_preprocessing", Gna2InstrumentationPoint_Gna2InstrumentationPointLibPreprocessing),
-    ("lib_submission", Gna2InstrumentationPoint_Gna2InstrumentationPointLibSubmission),
-    ("lib_processing", Gna2InstrumentationPoint_Gna2InstrumentationPointLibProcessing),
-    ("lib_execution", Gna2InstrumentationPoint_Gna2InstrumentationPointLibExecution),
+    (
+        "hw_total",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointHwTotalCycles,
+    ),
+    (
+        "hw_stall",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointHwStallCycles,
+    ),
+    (
+        "lib_preprocessing",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointLibPreprocessing,
+    ),
+    (
+        "lib_submission",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointLibSubmission,
+    ),
+    (
+        "lib_processing",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointLibProcessing,
+    ),
+    (
+        "lib_execution",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointLibExecution,
+    ),
     (
         "lib_device_request_ready",
         Gna2InstrumentationPoint_Gna2InstrumentationPointLibDeviceRequestReady,
@@ -111,15 +151,30 @@ const KNOWN_POINTS: &[(&str, Gna2InstrumentationPoint)] = &[
         "lib_device_request_completed",
         Gna2InstrumentationPoint_Gna2InstrumentationPointLibDeviceRequestCompleted,
     ),
-    ("lib_completion", Gna2InstrumentationPoint_Gna2InstrumentationPointLibCompletion),
-    ("lib_received", Gna2InstrumentationPoint_Gna2InstrumentationPointLibReceived),
-    ("drv_preprocessing", Gna2InstrumentationPoint_Gna2InstrumentationPointDrvPreprocessing),
-    ("drv_processing", Gna2InstrumentationPoint_Gna2InstrumentationPointDrvProcessing),
+    (
+        "lib_completion",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointLibCompletion,
+    ),
+    (
+        "lib_received",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointLibReceived,
+    ),
+    (
+        "drv_preprocessing",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointDrvPreprocessing,
+    ),
+    (
+        "drv_processing",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointDrvProcessing,
+    ),
     (
         "drv_device_request_completed",
         Gna2InstrumentationPoint_Gna2InstrumentationPointDrvDeviceRequestCompleted,
     ),
-    ("drv_completion", Gna2InstrumentationPoint_Gna2InstrumentationPointDrvCompletion),
+    (
+        "drv_completion",
+        Gna2InstrumentationPoint_Gna2InstrumentationPointDrvCompletion,
+    ),
 ];
 
 fn point_name(id: Gna2InstrumentationPoint) -> &'static str {

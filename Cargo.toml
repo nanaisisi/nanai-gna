@@ -7,8 +7,13 @@ version = "0.1.0"
 edition = "2024"
 license = "LGPL-2.1"
 
+[lib]
+crate-type = ["rlib"]
+
 [dependencies]
 thiserror = "2"
+bitflags = "2"
+lazy_static = "1"
 
 [build-dependencies]
 bindgen = "0.72"
@@ -17,5 +22,7 @@ bindgen = "0.72"
 clap = { version = "4", features = ["derive"] }
 
 [features]
+# Feature to switch between FFI-backed and pure-Rust implementation
+ffi = []
 link_gna = []
 rust_backend = []
