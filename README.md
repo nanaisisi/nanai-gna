@@ -34,6 +34,36 @@ cargo test -p nanai-gna
 
 > 注: Intel® GNA ハードウェアを使う場合、対応するドライバーを事前にインストールしてください。
 
+## Usage (English)
+
+### 1. Build
+
+```bash
+cargo build --workspace
+```
+
+### 2. Run examples
+
+- Request state sample:
+
+```bash
+cargo run --example request_state
+```
+
+- Utilization calculation sample:
+
+```bash
+cargo run --example usage_report -- --points hw_total,hw_stall --results 1000,250
+```
+
+### 3. Run tests
+
+```bash
+cargo test -p nanai-gna
+```
+
+> Note: If you want to use Intel® GNA hardware, install the appropriate driver first.
+
 # PROJECT NOT UNDER ACTIVE MANAGEMENT
 
 This project will no longer be maintained by Intel.  
