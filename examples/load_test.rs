@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::sync::{Arc};
+use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
@@ -29,18 +29,40 @@ struct Args {
     backend: String,
 }
 
-enum SelectedBackend { Ffi, Rust }
+enum SelectedBackend {
+    Ffi,
+    Rust,
+}
 
 fn choose_backend(s: &str) -> Result<SelectedBackend, String> {
     match s {
         "auto" => {
-            if cfg!(feature = "rust_backend") { Ok(SelectedBackend::Rust) }
-            else if cfg!(feature = "link_gna") { Ok(SelectedBackend::Ffi) }
-            else { Err("no backend compiled into this binary".into()) }
+            if cfg!(feature = "rust_backend") {
+                Ok(SelectedBackend::Rust)
+            } else if cfg!(feature = "link_gna") {
+                Ok(SelectedBackend::Ffi)
+            } else {
+                Err("no backend compiled into this binary".into())
+            }
         }
-        "ffi" => { if cfg!(feature = "link_gna") { Ok(SelectedBackend::Ffi) } else { Err("ffi backend not available: build with --features link_gna".into()) } }
-        "rust" => { if cfg!(feature = "rust_backend") { Ok(SelectedBackend::Rust) } else { Err("rust backend not available: build with --features rust_backend".into()) } }
-        other => Err(format!("unknown backend '{}', expected auto|ffi|rust", other)),
+        "ffi" => {
+            if cfg!(feature = "link_gna") {
+                Ok(SelectedBackend::Ffi)
+            } else {
+                Err("ffi backend not available: build with --features link_gna".into())
+            }
+        }
+        "rust" => {
+            if cfg!(feature = "rust_backend") {
+                Ok(SelectedBackend::Rust)
+            } else {
+                Err("rust backend not available: build with --features rust_backend".into())
+            }
+        }
+        other => Err(format!(
+            "unknown backend '{}', expected auto|ffi|rust",
+            other
+        )),
     }
 }
 
@@ -48,10 +70,16 @@ fn main() {
     let args = Args::parse();
     let backend = match choose_backend(&args.backend) {
         Ok(b) => b,
-        Err(e) => { eprintln!("{}", e); std::process::exit(1); }
+        Err(e) => {
+            eprintln!("{}", e);
+            std::process::exit(1);
+        }
     };
 
-    println!("Starting GNA load test: threads={}, duration={}s backend={}", args.threads, args.duration, args.backend);
+    println!(
+        "Starting GNA load test: threads={}, duration={}s backend={}",
+        args.threads, args.duration, args.backend
+    );
 
     let stop = Arc::new(AtomicBool::new(false));
     let ops = Arc::new(AtomicU64::new(0));
@@ -75,7 +103,16 @@ fn main() {
                     let timeout_ms = args.timeout_ms;
 
                     let handle = thread::spawn(move || {
-                        gna_worker_ffi(i as u32, stop, ops, latency_sum, latency_min, latency_max, device_open_close, timeout_ms);
+                        gna_worker_ffi(
+                            i as u32,
+                            stop,
+                            ops,
+                            latency_sum,
+                            latency_min,
+                            latency_max,
+                            device_open_close,
+                            timeout_ms,
+                        );
                     });
                     handles.push(handle);
                 }
@@ -99,7 +136,16 @@ fn main() {
                     let timeout_ms = args.timeout_ms;
 
                     let handle = thread::spawn(move || {
-                        nanai_gna::backend::gna_worker_rust(i as u32, stop, ops, latency_sum, latency_min, latency_max, device_open_close, timeout_ms);
+                        nanai_gna::backend::gna_worker_rust(
+                            i as u32,
+                            stop,
+                            ops,
+                            latency_sum,
+                            latency_min,
+                            latency_max,
+                            device_open_close,
+                            timeout_ms,
+                        );
                     });
                     handles.push(handle);
                 }
@@ -133,7 +179,11 @@ fn main() {
             let sum = latency_sum_report.load(Ordering::Relaxed);
             let min = latency_min_report.load(Ordering::Relaxed);
             let max = latency_max_report.load(Ordering::Relaxed);
-            let avg = if cur_ops == 0 { 0.0 } else { (sum as f64) / (cur_ops as f64) };
+            let avg = if cur_ops == 0 {
+                0.0
+            } else {
+                (sum as f64) / (cur_ops as f64)
+            };
             println!(
                 "ops_total={}  ops/s={:.2}  avg_latency_us={:.2}  min_us={}  max_us={}",
                 cur_ops,
@@ -162,15 +212,30 @@ fn main() {
     let min = latency_min.load(Ordering::Relaxed);
     let max = latency_max.load(Ordering::Relaxed);
     let secs = Instant::now().duration_since(start).as_secs_f64();
-    let avg = if total == 0 { 0.0 } else { (sum as f64) / (total as f64) };
-    println!("Done. Total ops={} (avg {:.2} ops/s) avg_latency_us={:.2} min_us={} max_us={}", total, (total as f64) / secs, avg, if min == u64::MAX { 0 } else { min }, max);
+    let avg = if total == 0 {
+        0.0
+    } else {
+        (sum as f64) / (total as f64)
+    };
+    println!(
+        "Done. Total ops={} (avg {:.2} ops/s) avg_latency_us={:.2} min_us={} max_us={}",
+        total,
+        (total as f64) / secs,
+        avg,
+        if min == u64::MAX { 0 } else { min },
+        max
+    );
 }
 
 #[cfg(feature = "link_gna")]
 /// Helpers
-fn round_up_to64(x: usize) -> usize { ((x + 63) / 64) * 64 }
+fn round_up_to64(x: usize) -> usize {
+    ((x + 63) / 64) * 64
+}
 #[cfg(feature = "link_gna")]
-fn round_up(x: usize, align: usize) -> usize { ((x + align - 1) / align) * align }
+fn round_up(x: usize, align: usize) -> usize {
+    ((x + align - 1) / align) * align
+}
 
 #[cfg(feature = "link_gna")]
 fn gna_worker_ffi(
@@ -183,14 +248,17 @@ fn gna_worker_ffi(
     device_open_close: bool,
     timeout_ms: u32,
 ) {
-    use nanai_gna::raw as raw;
+    use nanai_gna::raw;
 
     unsafe {
         // 1) Query devices
         let mut device_count: u32 = 0;
         let mut status = raw::Gna2DeviceGetCount(&mut device_count as *mut u32);
         if raw::Gna2Status_Gna2StatusSuccess != status {
-            eprintln!("Thread {}: Gna2DeviceGetCount failed: {:?}", thread_id, status);
+            eprintln!(
+                "Thread {}: Gna2DeviceGetCount failed: {:?}",
+                thread_id, status
+            );
             return;
         }
         if device_count == 0 {
@@ -203,7 +271,7 @@ fn gna_worker_ffi(
 
         if device_open_close {
             status = raw::Gna2DeviceOpen(device_index);
-                if raw::Gna2Status_Gna2StatusSuccess != status {
+            if raw::Gna2Status_Gna2StatusSuccess != status {
                 eprintln!("Thread {}: Gna2DeviceOpen failed: {:?}", thread_id, status);
                 return;
             }
@@ -214,18 +282,17 @@ fn gna_worker_ffi(
         const H: usize = 8;
         const B: usize = 4;
         let weights: [i16; H * W] = [
-            -6, -2, -1, -1, -2, 9, 6, 5, 2, 4, -1, 5, -2, -4, 0, 9,
-            -8, 8, -4, 6, 5, 3, -7, -9, 7, 0, -4, -1, 1, 7, 6, -6,
-            2, -8, 6, 5, -1, -2, 7, 5, -1, 4, 8, 7, -9, -1, 7, 1,
-            0, -2, 1, 0, 6, -6, 7, 4, -6, 0, 3, -2, 1, 8, -6, -2,
-            -6, -3, 4, -2, -8, -6, 6, 5, 6, -9, -5, -2, -5, -8, -6, -2,
-            -7, 0, 6, -3, -1, -6, 4, 1, -4, -5, -3, 7, 9, -9, 9, 9,
-            0, -2, 6, -3, 5, -2, -1, -3, -5, 7, 6, 6, -8, 0, -4, 9,
-            2, 7, -8, -7, 8, -6, -6, 1, 7, -4, -4, 9, -6, -6, 5, -7,
+            -6, -2, -1, -1, -2, 9, 6, 5, 2, 4, -1, 5, -2, -4, 0, 9, -8, 8, -4, 6, 5, 3, -7, -9, 7,
+            0, -4, -1, 1, 7, 6, -6, 2, -8, 6, 5, -1, -2, 7, 5, -1, 4, 8, 7, -9, -1, 7, 1, 0, -2, 1,
+            0, 6, -6, 7, 4, -6, 0, 3, -2, 1, 8, -6, -2, -6, -3, 4, -2, -8, -6, 6, 5, 6, -9, -5, -2,
+            -5, -8, -6, -2, -7, 0, 6, -3, -1, -6, 4, 1, -4, -5, -3, 7, 9, -9, 9, 9, 0, -2, 6, -3,
+            5, -2, -1, -3, -5, 7, 6, 6, -8, 0, -4, 9, 2, 7, -8, -7, 8, -6, -6, 1, 7, -4, -4, 9, -6,
+            -6, 5, -7,
         ];
         let inputs: [i16; W * B] = [
-            -5, 9, -7, 4, 5, -4, -7, 4, 0, 7, 1, -7, 1, 6, 7, 9, 2, -4, 9, 8, -5, -1, 2, 9, -8, -8, 8, 1, -7, 2, -1, -1,
-            -9, -5, -8, 5, 0, -1, 3, 9, 0, 8, 1, -2, -9, 8, 0, -7, -9, -8, -1, -4, -3, -7, -2, 3, -8, 0, 1, 3, -4, -6, -8, -2,
+            -5, 9, -7, 4, 5, -4, -7, 4, 0, 7, 1, -7, 1, 6, 7, 9, 2, -4, 9, 8, -5, -1, 2, 9, -8, -8,
+            8, 1, -7, 2, -1, -1, -9, -5, -8, 5, 0, -1, 3, 9, 0, 8, 1, -2, -9, 8, 0, -7, -9, -8, -1,
+            -4, -3, -7, -2, 3, -8, 0, 1, 3, -4, -6, -8, -2,
         ];
         let biases: [i32; H] = [5, 4, -2, 5, -7, -5, 4, -1];
 
@@ -239,10 +306,16 @@ fn gna_worker_ffi(
 
         let mut bytes_granted: u32 = 0;
         let mut memory: *mut std::ffi::c_void = std::ptr::null_mut();
-        status = raw::Gna2MemoryAlloc(bytes_requested, &mut bytes_granted as *mut u32, &mut memory as *mut *mut std::ffi::c_void);
+        status = raw::Gna2MemoryAlloc(
+            bytes_requested,
+            &mut bytes_granted as *mut u32,
+            &mut memory as *mut *mut std::ffi::c_void,
+        );
         if raw::Gna2Status_Gna2StatusSuccess != status {
             eprintln!("Thread {}: Gna2MemoryAlloc failed: {:?}", thread_id, status);
-            if device_open_close { let _ = raw::Gna2DeviceClose(device_index); }
+            if device_open_close {
+                let _ = raw::Gna2DeviceClose(device_index);
+            }
             return;
         }
 
@@ -261,35 +334,70 @@ fn gna_worker_ffi(
         std::ptr::copy_nonoverlapping(biases.as_ptr(), biases_buffer, biases.len());
 
         // Prepare tensors and operation
-        let mut input_tensor = raw::Gna2TensorInit2D(W as u32, B as u32, raw::Gna2DataType_Gna2DataTypeInt16, pinned_inputs as *mut std::ffi::c_void);
-        let mut output_tensor = raw::Gna2TensorInit2D(H as u32, B as u32, raw::Gna2DataType_Gna2DataTypeInt32, pinned_outputs as *mut std::ffi::c_void);
-        let mut weight_tensor = raw::Gna2TensorInit2D(H as u32, W as u32, raw::Gna2DataType_Gna2DataTypeInt16, weights_buffer as *mut std::ffi::c_void);
-        let mut bias_tensor = raw::Gna2TensorInit1D(H as u32, raw::Gna2DataType_Gna2DataTypeInt32, biases_buffer as *mut std::ffi::c_void);
+        let mut input_tensor = raw::Gna2TensorInit2D(
+            W as u32,
+            B as u32,
+            raw::Gna2DataType_Gna2DataTypeInt16,
+            pinned_inputs as *mut std::ffi::c_void,
+        );
+        let mut output_tensor = raw::Gna2TensorInit2D(
+            H as u32,
+            B as u32,
+            raw::Gna2DataType_Gna2DataTypeInt32,
+            pinned_outputs as *mut std::ffi::c_void,
+        );
+        let mut weight_tensor = raw::Gna2TensorInit2D(
+            H as u32,
+            W as u32,
+            raw::Gna2DataType_Gna2DataTypeInt16,
+            weights_buffer as *mut std::ffi::c_void,
+        );
+        let mut bias_tensor = raw::Gna2TensorInit1D(
+            H as u32,
+            raw::Gna2DataType_Gna2DataTypeInt32,
+            biases_buffer as *mut std::ffi::c_void,
+        );
         let mut activation_tensor = raw::Gna2TensorInitDisabled();
 
         let mut operation: raw::Gna2Operation = std::mem::zeroed();
-        status = raw::Gna2OperationInitFullyConnectedAffine(&mut operation as *mut raw::Gna2Operation,
-                                                            Some(custom_alloc),
-                                                            &mut input_tensor as *mut _,
-                                                            &mut output_tensor as *mut _,
-                                                            &mut weight_tensor as *mut _,
-                                                            &mut bias_tensor as *mut _,
-                                                            &mut activation_tensor as *mut _);
+        status = raw::Gna2OperationInitFullyConnectedAffine(
+            &mut operation as *mut raw::Gna2Operation,
+            Some(custom_alloc),
+            &mut input_tensor as *mut _,
+            &mut output_tensor as *mut _,
+            &mut weight_tensor as *mut _,
+            &mut bias_tensor as *mut _,
+            &mut activation_tensor as *mut _,
+        );
         if raw::Gna2Status_Gna2StatusSuccess != status {
-            eprintln!("Thread {}: Gna2OperationInitFullyConnectedAffine failed: {:?}", thread_id, status);
+            eprintln!(
+                "Thread {}: Gna2OperationInitFullyConnectedAffine failed: {:?}",
+                thread_id, status
+            );
             let _ = raw::Gna2MemoryFree(memory);
-            if device_open_close { let _ = raw::Gna2DeviceClose(device_index); }
+            if device_open_close {
+                let _ = raw::Gna2DeviceClose(device_index);
+            }
             return;
         }
 
         // Create model
-        let model = raw::Gna2Model { NumberOfOperations: 1, Operations: &mut operation };
+        let model = raw::Gna2Model {
+            NumberOfOperations: 1,
+            Operations: &mut operation,
+        };
         let mut model_id: u32 = raw::GNA2_DISABLED as u32;
-        status = raw::Gna2ModelCreate(device_index, &model as *const raw::Gna2Model, &mut model_id as *mut u32);
+        status = raw::Gna2ModelCreate(
+            device_index,
+            &model as *const raw::Gna2Model,
+            &mut model_id as *mut u32,
+        );
         if raw::Gna2Status_Gna2StatusSuccess != status {
             eprintln!("Thread {}: Gna2ModelCreate failed: {:?}", thread_id, status);
             let _ = raw::Gna2MemoryFree(memory);
-            if device_open_close { let _ = raw::Gna2DeviceClose(device_index); }
+            if device_open_close {
+                let _ = raw::Gna2DeviceClose(device_index);
+            }
             return;
         }
 
@@ -297,25 +405,52 @@ fn gna_worker_ffi(
         let mut config_id: u32 = raw::GNA2_DISABLED as u32;
         status = raw::Gna2RequestConfigCreate(model_id, &mut config_id as *mut u32);
         if raw::Gna2Status_Gna2StatusSuccess != status {
-            eprintln!("Thread {}: Gna2RequestConfigCreate failed: {:?}", thread_id, status);
+            eprintln!(
+                "Thread {}: Gna2RequestConfigCreate failed: {:?}",
+                thread_id, status
+            );
             let _ = raw::Gna2ModelRelease(model_id);
             let _ = raw::Gna2MemoryFree(memory);
-            if device_open_close { let _ = raw::Gna2DeviceClose(device_index); }
+            if device_open_close {
+                let _ = raw::Gna2DeviceClose(device_index);
+            }
             return;
         }
 
-        status = raw::Gna2RequestConfigSetOperandBuffer(config_id, 0, 0, pinned_inputs as *mut std::ffi::c_void);
+        status = raw::Gna2RequestConfigSetOperandBuffer(
+            config_id,
+            0,
+            0,
+            pinned_inputs as *mut std::ffi::c_void,
+        );
         if raw::Gna2Status_Gna2StatusSuccess != status {
-            eprintln!("Thread {}: Gna2RequestConfigSetOperandBuffer input failed: {:?}", thread_id, status);
+            eprintln!(
+                "Thread {}: Gna2RequestConfigSetOperandBuffer input failed: {:?}",
+                thread_id, status
+            );
         }
-        status = raw::Gna2RequestConfigSetOperandBuffer(config_id, 0, 1, pinned_outputs as *mut std::ffi::c_void);
+        status = raw::Gna2RequestConfigSetOperandBuffer(
+            config_id,
+            0,
+            1,
+            pinned_outputs as *mut std::ffi::c_void,
+        );
         if raw::Gna2Status_Gna2StatusSuccess != status {
-            eprintln!("Thread {}: Gna2RequestConfigSetOperandBuffer output failed: {:?}", thread_id, status);
+            eprintln!(
+                "Thread {}: Gna2RequestConfigSetOperandBuffer output failed: {:?}",
+                thread_id, status
+            );
         }
 
-        status = raw::Gna2RequestConfigSetAccelerationMode(config_id, raw::Gna2AccelerationMode_Gna2AccelerationModeAuto);
+        status = raw::Gna2RequestConfigSetAccelerationMode(
+            config_id,
+            raw::Gna2AccelerationMode_Gna2AccelerationModeAuto,
+        );
         if raw::Gna2Status_Gna2StatusSuccess != status {
-            eprintln!("Thread {}: Gna2RequestConfigSetAccelerationMode failed: {:?}", thread_id, status);
+            eprintln!(
+                "Thread {}: Gna2RequestConfigSetAccelerationMode failed: {:?}",
+                thread_id, status
+            );
         }
 
         // Main loop: enqueue + wait
@@ -328,7 +463,10 @@ fn gna_worker_ffi(
             let mut request_id: u32 = raw::GNA2_DISABLED as u32;
             status = raw::Gna2RequestEnqueue(config_id, &mut request_id as *mut u32);
             if raw::Gna2Status_Gna2StatusSuccess != status {
-                eprintln!("Thread {}: Gna2RequestEnqueue failed: {:?}", thread_id, status);
+                eprintln!(
+                    "Thread {}: Gna2RequestEnqueue failed: {:?}",
+                    thread_id, status
+                );
                 break;
             }
 
@@ -346,7 +484,12 @@ fn gna_worker_ffi(
             // update min
             let mut cur_min = latency_min.load(Ordering::Relaxed);
             while us < cur_min {
-                match latency_min.compare_exchange(cur_min, us, Ordering::Relaxed, Ordering::Relaxed) {
+                match latency_min.compare_exchange(
+                    cur_min,
+                    us,
+                    Ordering::Relaxed,
+                    Ordering::Relaxed,
+                ) {
                     Ok(_) => break,
                     Err(old) => cur_min = old,
                 }
@@ -354,7 +497,12 @@ fn gna_worker_ffi(
             // update max
             let mut cur_max = latency_max.load(Ordering::Relaxed);
             while us > cur_max {
-                match latency_max.compare_exchange(cur_max, us, Ordering::Relaxed, Ordering::Relaxed) {
+                match latency_max.compare_exchange(
+                    cur_max,
+                    us,
+                    Ordering::Relaxed,
+                    Ordering::Relaxed,
+                ) {
                     Ok(_) => break,
                     Err(old) => cur_max = old,
                 }
@@ -369,7 +517,9 @@ fn gna_worker_ffi(
         let _ = raw::Gna2RequestConfigRelease(config_id);
         let _ = raw::Gna2ModelRelease(model_id);
         let _ = raw::Gna2MemoryFree(memory);
-        if device_open_close { let _ = raw::Gna2DeviceClose(device_index); }
+        if device_open_close {
+            let _ = raw::Gna2DeviceClose(device_index);
+        }
     }
 }
 
@@ -386,8 +536,10 @@ unsafe extern "C" fn custom_alloc(dumped_model_size: u32) -> *mut std::ffi::c_vo
     };
     unsafe {
         let ptr = std::alloc::alloc_zeroed(layout);
-        if ptr.is_null() { std::ptr::null_mut() } else { ptr as *mut std::ffi::c_void }
+        if ptr.is_null() {
+            std::ptr::null_mut()
+        } else {
+            ptr as *mut std::ffi::c_void
+        }
     }
 }
-
-
